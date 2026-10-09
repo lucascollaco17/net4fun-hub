@@ -59,8 +59,9 @@ async function body(req){
 http.createServer(async(req,res)=>{
   try{
     const u=new URL(req.url,"http://localhost");
+    console.log("[request]",req.method,u.pathname);
 
-    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"2.0.0",mode:"demo"});
+    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"2.1.0",mode:"demo"});
     if(u.pathname==="/api/me")return send(res,200,{user:{
       name:"Cliente Demo",
       login:"cliente.demo",
@@ -113,7 +114,9 @@ http.createServer(async(req,res)=>{
       const ext=path.extname(file);
       res.writeHead(200,{
         "Content-Type":mime[ext]||"application/octet-stream",
-        "Cache-Control":rel==="/sw.js"||ext===".html"||ext===".webmanifest"?"no-cache":"public, max-age=3600"
+        "Cache-Control":"no-store, no-cache, must-revalidate, max-age=0",
+        "Pragma":"no-cache",
+        "Expires":"0"
       });
       return fs.createReadStream(file).pipe(res);
     }
