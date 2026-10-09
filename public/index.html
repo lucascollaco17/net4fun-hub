@@ -7,14 +7,43 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Net4Fun">
-  <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/icon.svg">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.webmanifest?v=4">
+  <link rel="icon" href="/icon.svg?v=4" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.svg?v=4">
+  <link rel="stylesheet" href="/style.css?v=4">
   <title>Net4Fun Hub</title>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="/app.js"></script>
+  <div id="app">
+    <div style="max-width:680px;margin:80px auto;padding:24px;color:#e9f8ff;font-family:Arial,sans-serif">
+      <strong>Carregando Net4Fun Hub...</strong>
+      <div style="margin-top:8px;color:#88a5b8">Preparando a interface.</div>
+    </div>
+  </div>
+  <script>
+  (async function(){
+    const VERSION="net4fun-v4";
+    try{
+      if(localStorage.getItem("net4fun-bootstrap-version")!==VERSION){
+        localStorage.setItem("net4fun-bootstrap-version",VERSION);
+        if("serviceWorker" in navigator){
+          const regs=await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(r=>r.unregister()));
+        }
+        if("caches" in window){
+          const keys=await caches.keys();
+          await Promise.all(keys.map(k=>caches.delete(k)));
+        }
+      }
+    }catch(e){ console.warn("Bootstrap cleanup",e); }
+    const script=document.createElement("script");
+    script.src="/app.js?v=4";
+    script.async=false;
+    script.onerror=function(){
+      document.getElementById("app").innerHTML='<div style="max-width:720px;margin:70px auto;padding:24px;color:#fff;font-family:Arial,sans-serif"><h2>Não foi possível carregar a interface</h2><p style="color:#9db4c4">O arquivo principal do aplicativo foi bloqueado ou ficou preso no cache do navegador.</p><p><a href="/reset.html" style="color:#49d7ff">Limpar cache do Net4Fun Hub e tentar novamente</a></p></div>';
+    };
+    document.body.appendChild(script);
+  })();
+  </script>
 </body>
 </html>
