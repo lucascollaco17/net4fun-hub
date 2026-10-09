@@ -53,9 +53,9 @@ function home(){
     '<div class="metric"><span>Consoles em uso</span><b>'+count("console","busy")+'</b><small>PlayStation</small></div>'+
   '</section>'+
   '<section class="card section">'+
-    '<div class="section-title"><div><div class="eyebrow">Disponibilidade rápida</div><h2>PCs</h2></div><div class="segmented"><button class="'+(group==="normal"?"active":"")+'" onclick="s.pcGroup=\\'normal\\';render()">PCs normais</button><button class="'+(group==="vip"?"active":"")+'" onclick="s.pcGroup=\\'vip\\';render()">PCs VIP</button></div></div>'+
+    '<div class="section-title"><div><div class="eyebrow">Disponibilidade rápida</div><h2>PCs</h2></div><div class="segmented"><button class="'+(group==="normal"?"active":"")+'" onclick="s.pcGroup=\'normal\';render()">PCs normais</button><button class="'+(group==="vip"?"active":"")+'" onclick="s.pcGroup=\'vip\';render()">PCs VIP</button></div></div>'+
     '<div class="grid preview-grid">'+pcs.slice(0,12).map(p=>pcCard(p)).join("")+'</div>'+
-    '<div class="section-footer"><button class="btn primary" onclick="s.tab=\\'stations\\';render()">Ver todos os PCs</button><span class="muted">Uso normal por ordem de chegada.</span></div>'+
+    '<div class="section-footer"><button class="btn primary" onclick="s.tab=\'stations\';render()">Ver todos os PCs</button><span class="muted">Uso normal por ordem de chegada.</span></div>'+
   '</section>';
 }
 
@@ -65,7 +65,7 @@ function stations(){
   return topbar()+
   '<section class="card section">'+
     '<div class="eyebrow">Disponibilidade</div><h1 class="page-title">PCs & Consoles</h1>'+
-    '<div class="segmented wide"><button class="'+(mode==="normal"?"active":"")+'" onclick="s.pcGroup=\\'normal\\';render()">PCs normais</button><button class="'+(mode==="vip"?"active":"")+'" onclick="s.pcGroup=\\'vip\\';render()">PCs VIP</button><button class="'+(mode==="console"?"active":"")+'" onclick="s.pcGroup=\\'console\\';render()">Consoles</button></div>'+
+    '<div class="segmented wide"><button class="'+(mode==="normal"?"active":"")+'" onclick="s.pcGroup=\'normal\';render()">PCs normais</button><button class="'+(mode==="vip"?"active":"")+'" onclick="s.pcGroup=\'vip\';render()">PCs VIP</button><button class="'+(mode==="console"?"active":"")+'" onclick="s.pcGroup=\'console\';render()">Consoles</button></div>'+
     '<div class="legend"><span><i class="dot free-dot"></i>Disponível</span><span><i class="dot busy-dot"></i>Em uso</span><span><i class="dot off-dot"></i>Indisponível</span></div>'+
     '<div class="grid">'+arr.map(p=>pcCard(p)).join("")+'</div>'+
   '</section>';
@@ -77,7 +77,7 @@ function events(){
   return topbar()+
   '<section class="corujao-hero card section">'+
     '<div class="owl-wrap"><img src="/owl.svg" alt="Corujão Net4Fun"></div>'+
-    '<div class="corujao-copy"><div class="eyebrow">Evento especial</div><h1>Corujão Net4Fun</h1><div class="schedule"><strong>Todos os sábados</strong><span>23:00 às 06:00</span></div><p>Escolha antecipadamente o PC que você quer usar durante o Corujão.</p><div class="event-stats"><div><b>'+e.freeCount+'</b><span>PCs disponíveis</span></div><div><b>'+e.reservedCount+'</b><span>reservados</span></div></div><button class="btn primary large" onclick="openEvent(\\''+e.id+'\\')">Escolher PC</button></div>'+
+    '<div class="corujao-copy"><div class="eyebrow">Evento especial</div><h1>Corujão Net4Fun</h1><div class="schedule"><strong>Todos os sábados</strong><span>23:00 às 06:00</span></div><p>Escolha antecipadamente o PC que você quer usar durante o Corujão.</p><div class="event-stats"><div><b>'+e.freeCount+'</b><span>PCs disponíveis</span></div><div><b>'+e.reservedCount+'</b><span>reservados</span></div></div><button class="btn primary large" onclick="openEvent(\''+e.id+'\')">Escolher PC</button></div>'+
   '</section>';
 }
 
@@ -90,7 +90,7 @@ function avatarHtml(){
 function account(){
   return topbar()+
   '<section class="card section profile-card">'+
-    '<div class="profile-head"><div class="avatar" id="avatarBox">'+avatarHtml()+'</div><div class="profile-main"><div class="eyebrow">Conta do cliente</div><h1>'+(s.me?.name||"Cliente")+'</h1><div class="login-row"><span>Login</span><strong>'+(s.me?.login||"—")+'</strong></div><button class="btn subtle" onclick="document.getElementById(\\'avatarInput\\').click()">Alterar foto</button><input id="avatarInput" class="hidden" type="file" accept="image/*" onchange="changeAvatar(this)"></div></div>'+
+    '<div class="profile-head"><div class="avatar" id="avatarBox">'+avatarHtml()+'</div><div class="profile-main"><div class="eyebrow">Conta do cliente</div><h1>'+(s.me?.name||"Cliente")+'</h1><div class="login-row"><span>Login</span><strong>'+(s.me?.login||"—")+'</strong></div><button class="btn subtle" onclick="document.getElementById(\'avatarInput\').click()">Alterar foto</button><input id="avatarInput" class="hidden" type="file" accept="image/*" onchange="changeAvatar(this)"></div></div>'+
     '<div class="account-actions"><button class="action-card" onclick="openBuyHours()"><span class="action-icon">+</span><div><b>Adicionar horas</b><small>Comprar mais tempo para sua conta</small></div></button><button class="action-card" onclick="openReport()"><span class="action-icon">!</span><div><b>Relatar problema</b><small>Conta, PC, saldo, reserva ou compra</small></div></button></div>'+
   '</section>';
 }
@@ -98,7 +98,7 @@ function account(){
 function sidebar(){
   const installed=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
   const items=[["home","Início"],["stations","PCs"],["events","Corujão"],["account","Conta"]];
-  return '<aside class="sidebar"><div class="side-brand"><img class="brand-full" src="/brand.svg" alt="Net4Fun"><img class="brand-mini" src="/icon.svg" alt="Net4Fun"></div><nav class="side-nav">'+items.map(([id,label])=>'<button class="'+(s.tab===id?"active":"")+'" onclick="s.tab=\\''+id+'\\';render()"><span>'+label+'</span></button>').join("")+'</nav><div class="side-bottom">'+(installed?'<div class="installed-label">App instalado</div>':'<button class="install-nav" onclick="install()">Instalar app</button>')+'</div></aside>';
+  return '<aside class="sidebar"><div class="side-brand"><img class="brand-full" src="/brand.svg" alt="Net4Fun"><img class="brand-mini" src="/icon.svg" alt="Net4Fun"></div><nav class="side-nav">'+items.map(([id,label])=>'<button class="'+(s.tab===id?"active":"")+'" onclick="s.tab=\''+id+'\';render()"><span>'+label+'</span></button>').join("")+'</nav><div class="side-bottom">'+(installed?'<div class="installed-label">App instalado</div>':'<button class="install-nav" onclick="install()">Instalar app</button>')+'</div></aside>';
 }
 
 function render(){
@@ -124,7 +124,7 @@ function modal(html){
 }
 
 function openBuyHours(){
-  const m=modal('<div class="modal-head"><div><div class="eyebrow">Adicionar horas</div><h2>Quanto tempo você quer adicionar?</h2></div><button class="btn" data-close>Fechar</button></div><div class="hour-options">'+[1,3,5,10].map(h=>'<button onclick="buyHours('+h+',this.closest(\\'.modal\\'))"><b>'+h+'h</b><span>Selecionar pacote</span></button>').join("")+'</div><p class="muted modal-note">Os valores e a forma de pagamento serão definidos junto com a Net4Fun antes do lançamento.</p>');
+  const m=modal('<div class="modal-head"><div><div class="eyebrow">Adicionar horas</div><h2>Quanto tempo você quer adicionar?</h2></div><button class="btn" data-close>Fechar</button></div><div class="hour-options">'+[1,3,5,10].map(h=>'<button onclick="buyHours('+h+',this.closest(\'.modal\'))"><b>'+h+'h</b><span>Selecionar pacote</span></button>').join("")+'</div><p class="muted modal-note">Os valores e a forma de pagamento serão definidos junto com a Net4Fun antes do lançamento.</p>');
   m.querySelector("[data-close]").onclick=()=>m.remove();
 }
 
