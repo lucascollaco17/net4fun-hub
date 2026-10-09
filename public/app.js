@@ -39,7 +39,7 @@ function pcCard(p,event){
 }
 
 function topbar(){
-  return '<div class="topbar"><div><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
+  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=5" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
 }
 
 function home(){
@@ -95,14 +95,14 @@ function account(){
   '</section>';
 }
 
-function sidebar(){
+function bottomNav(){
   const installed=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
   const items=[["home","Início"],["stations","PCs"],["events","Corujão"],["account","Conta"]];
-  return '<aside class="sidebar"><div class="side-brand"><img class="brand-full" src="/brand.svg" alt="Net4Fun"><img class="brand-mini" src="/icon.svg" alt="Net4Fun"></div><nav class="side-nav">'+items.map(([id,label])=>'<button class="'+(s.tab===id?"active":"")+'" onclick="s.tab=\''+id+'\';render()"><span>'+label+'</span></button>').join("")+'</nav><div class="side-bottom">'+(installed?'<div class="installed-label">App instalado</div>':'<button class="install-nav" onclick="install()">Instalar app</button>')+'</div></aside>';
+  return '<nav class="bottom-nav">'+items.map(([id,label])=>'<button class="nav-tab '+(s.tab===id?"active":"")+'" onclick="s.tab=\''+id+'\';render()"><span>'+label+'</span></button>').join("")+(installed?'<button class="nav-tab installed" disabled><span>Instalado</span></button>':'<button class="nav-tab" onclick="install()"><span>Instalar app</span></button>')+'</nav>';
 }
 
 function render(){
-  A.innerHTML=sidebar()+'<main class="content">'+(s.tab==="home"?home():s.tab==="stations"?stations():s.tab==="events"?events():account())+'</main>';
+  A.innerHTML='<main class="content">'+(s.tab==="home"?home():s.tab==="stations"?stations():s.tab==="events"?events():account())+'</main>'+bottomNav();
 }
 
 function changeAvatar(input){
@@ -190,6 +190,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=4",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=5",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
 render();
 load();
