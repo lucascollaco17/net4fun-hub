@@ -1,4 +1,5 @@
 {
+  "id":"/",
   "name":"Net4Fun Hub",
   "short_name":"Net4Fun",
   "description":"Acompanhe saldo, disponibilidade de PCs e reservas de Corujão.",
@@ -8,6 +9,14 @@
   "background_color":"#05080d",
   "theme_color":"#05080d",
   "orientation":"portrait-primary",
-  "icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}],
-  "shortcuts":[{"name":"PCs & Consoles","url":"/?tab=stations"},{"name":"Corujão","url":"/?tab=events"}]
+  "prefer_related_applications":false,
+  "icons":[
+    {"src":"/icon.svg","sizes":"192x192","type":"image/svg+xml","purpose":"any"},
+    {"src":"/icon.svg","sizes":"512x512","type":"image/svg+xml","purpose":"any"},
+    {"src":"/icon.svg","sizes":"512x512","type":"image/svg+xml","purpose":"maskable"}
+  ],
+  "shortcuts":[
+    {"name":"PCs & Consoles","url":"/?tab=stations"},
+    {"name":"Corujão","url":"/?tab=events"}
+  ]
 }
