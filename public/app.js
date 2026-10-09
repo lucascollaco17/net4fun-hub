@@ -190,5 +190,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js"));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=4",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+render();
 load();
