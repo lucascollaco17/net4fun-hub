@@ -244,3 +244,45 @@ body{overflow-x:hidden}
   .sketch-vip{font-size:18px}
   .sketch-legend h3{font-size:15px}
 }
+
+/* V8 — refinamento do mapa conforme marcações do esboço */
+.sketch-layout{display:block;min-width:920px}
+.sketch-floor{width:100%;aspect-ratio:1.64/1;background:#273640;border:2px solid #2b5d75}
+.sketch-bathrooms{left:0;top:0;width:22%;height:26.5%;background:#8a4315;border:1px solid #b75f24}
+.sketch-common{left:22.5%;top:.5%;width:7%;height:72.5%;font-size:13px}
+.sketch-desk-left{left:29.5%;top:.5%;width:10.5%;height:72.5%;grid-template-columns:1fr 1fr;grid-template-rows:repeat(7,1fr);gap:6px}
+.sketch-desk-center{left:55%;top:.5%;width:10.5%;height:72.5%;grid-template-columns:1fr 1fr;grid-template-rows:repeat(7,1fr);gap:6px}
+.sketch-desk-right{right:0;top:.5%;width:5.2%;height:78.2%;grid-template-columns:1fr;grid-template-rows:repeat(12,1fr);gap:5px}
+.sketch-pc{font-size:11px;line-height:1;font-weight:950}
+.sketch-pc span{transform:scale(1.02)}
+.sketch-vip{width:11.6%;height:17.5%;top:26.5%;font-size:26px}
+.sketch-vip-one{left:41.8%}
+.sketch-vip-two{left:74.2%}
+.sketch-reception{left:63%;top:53.5%;width:31.8%;height:25%;font-size:16px}
+.sketch-wall{background:#05090d;z-index:2}
+.sketch-wall-left-top{left:0;top:26.5%;width:5%;height:25%}
+.sketch-wall-left-bottom{left:0;top:61%;width:5%;height:39%}
+.sketch-wall-middle-top{left:29.5%;top:44%;width:5.5%;height:24%}
+.sketch-wall-middle-bottom{left:29.5%;top:77%;width:5.5%;height:23%}
+.sketch-wall-right-mid{right:0;top:78.5%;width:5.2%;height:10.5%}
+.sketch-wall-right-bottom{right:0;top:91%;width:5.2%;height:9%}
+.sketch-ps5{gap:6px;font-size:12px;font-weight:900}
+.sketch-ps5 .ps5-stick{width:5px;height:34px}
+.sketch-ps5 small{font-size:11px;padding:4px 6px}
+.ps5-one{left:1.1%;top:34%}
+.ps5-two{left:1.1%;top:76%}
+.ps5-three{left:30.1%;top:50%}
+.ps5-four{left:30.1%;top:83.5%}
+.ps5-five{right:.8%;top:81.5%}
+.ps5-six{right:.8%;top:93.5%}
+.sketch-legend{display:none!important}
+@media(max-width:900px){
+  .sketch-layout{min-width:840px}
+  .sketch-pc{font-size:10px}
+  .sketch-ps5 small{font-size:10px}
+}
+@media(max-width:600px){
+  .sketch-layout{min-width:780px}
+  .sketch-pc{font-size:10px}
+  .sketch-ps5 small{font-size:10px}
+}

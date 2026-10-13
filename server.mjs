@@ -15,7 +15,7 @@ const stations=[
     const tier=i<32?"normal":"vip";
     return {id:n,name:n,type:"PC",tier,zone:tier==="vip"?"Área VIP":"Área "+String.fromCharCode(65+Math.floor(i/8)),status:busy.has(n)?"busy":"free"};
   }),
-  ...Array.from({length:4},(_,i)=>{
+  ...Array.from({length:6},(_,i)=>{
     const n="PS5 "+(i+1);
     return {id:n,name:n,type:"Console",tier:"console",zone:"Consoles",status:busy.has(n)?"busy":"free"};
   })
@@ -61,7 +61,7 @@ http.createServer(async(req,res)=>{
     const u=new URL(req.url,"http://localhost");
     console.log("[request]",req.method,u.pathname);
 
-    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"2.1.0",mode:"demo"});
+    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"2.2.0",mode:"demo"});
     if(u.pathname==="/api/me")return send(res,200,{user:{
       name:"Cliente Demo",
       login:"cliente.demo",
