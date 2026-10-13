@@ -326,3 +326,18 @@ body{overflow-x:hidden}
   .sketch-pc{font-size:11px!important}
   .sketch-ps5 small{font-size:11px!important}
 }
+
+/* V10 — mapa direto na Home + status explícito dos PS5 */
+.bottom-nav{grid-template-columns:repeat(4,1fr)!important}
+.home-floor-section{margin-top:14px}
+.home-floor-section>h2{margin:5px 0 14px}
+.sketch-ps5 .ps5-copy{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.sketch-ps5 .ps5-copy small{line-height:1}
+.sketch-ps5 .ps5-copy em{font-style:normal;font-size:9px;font-weight:900;white-space:nowrap;padding:2px 4px;border-radius:4px;border:1px solid transparent;line-height:1}
+.sketch-ps5.free .ps5-copy em{color:#8cf1b6;background:rgba(66,220,139,.12);border-color:rgba(66,220,139,.32)}
+.sketch-ps5.busy .ps5-copy em{color:#ffb1bc;background:rgba(255,102,122,.12);border-color:rgba(255,102,122,.32)}
+.ps5-seven,.ps5-eight{flex-direction:row-reverse!important}
+.ps5-seven .ps5-copy,.ps5-eight .ps5-copy{align-items:flex-end}
+@media(max-width:700px){
+  .sketch-ps5 .ps5-copy em{font-size:8px}
+}

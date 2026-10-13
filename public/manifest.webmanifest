@@ -11,11 +11,11 @@
   "orientation":"portrait-primary",
   "prefer_related_applications":false,
   "icons":[
-    {"src":"/net4fun-logo.webp?v=9","sizes":"1518x1518","type":"image/webp","purpose":"any"},
-    {"src":"/net4fun-logo.webp?v=9","sizes":"1518x1518","type":"image/webp","purpose":"maskable"}
+    {"src":"/net4fun-logo.webp?v=10","sizes":"1518x1518","type":"image/webp","purpose":"any"},
+    {"src":"/net4fun-logo.webp?v=10","sizes":"1518x1518","type":"image/webp","purpose":"maskable"}
   ],
   "shortcuts":[
-    {"name":"Mapa de PCs","url":"/?tab=stations"},
+    {"name":"Início","url":"/?tab=home"},
     {"name":"Corujão","url":"/?tab=events"}
   ]
 }

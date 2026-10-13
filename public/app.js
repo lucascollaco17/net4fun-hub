@@ -52,7 +52,8 @@ function pcRange(start,end){
 function sketchPs5(name,cls){
   const p=pcByName(name);
   const state=p?.status==="busy"?"busy":"free";
-  return '<div class="sketch-ps5 '+cls+' '+state+'" title="'+name+' • '+st(p?.status)+'"><span class="ps5-stick"></span><small>PS5</small></div>';
+  const label=st(p?.status);
+  return '<div class="sketch-ps5 '+cls+' '+state+'" title="'+name+' • '+label+'"><span class="ps5-stick"></span><span class="ps5-copy"><small>PS5</small><em>'+label+'</em></span></div>';
 }
 function floorplan(){
   return '<div class="sketch-scroll"><div class="sketch-layout"><div class="sketch-floor">'+
@@ -86,7 +87,7 @@ function pcCard(p,event){
 }
 
 function topbar(){
-  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=9" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
+  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=10" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
 }
 
 function home(){
@@ -97,7 +98,11 @@ function home(){
     '<div class="metric"><span>Consoles liberados</span><b>'+count("console","free")+'</b><small>PlayStation</small></div>'+
     '<div class="metric"><span>Consoles em uso</span><b>'+count("console","busy")+'</b><small>PlayStation</small></div>'+
   '</section>'+
-  '<section class="card section home-map-entry"><div><div class="eyebrow">Mapa da lan house</div><h2>Veja onde estão os equipamentos liberados</h2><p class="muted">Consulte o mapa completo da Net4Fun e veja os PCs em uso e liberados.</p></div><button class="btn primary large" onclick="s.tab=\'stations\';render()">Abrir mapa</button></section>';
+  '<section class="card section sketch-section home-floor-section">'+
+    '<div class="eyebrow">Mapa da lan house</div>'+
+    '<h2>PCs & Consoles</h2>'+
+    floorplan()+
+  '</section>';
 }
 
 function stations(){
@@ -135,12 +140,13 @@ function account(){
 
 function bottomNav(){
   const installed=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
-  const items=[["home","Início"],["stations","PCs"],["events","Corujão"],["account","Conta"]];
+  const items=[["home","Início"],["events","Corujão"],["account","Conta"]];
   return '<nav class="bottom-nav">'+items.map(([id,label])=>'<button class="nav-tab '+(s.tab===id?"active":"")+'" onclick="s.tab=\''+id+'\';render()"><span>'+label+'</span></button>').join("")+(installed?'<button class="nav-tab installed" disabled><span>Instalado</span></button>':'<button class="nav-tab" onclick="install()"><span>Instalar app</span></button>')+'</nav>';
 }
 
 function render(){
-  A.innerHTML='<main class="content">'+(s.tab==="home"?home():s.tab==="stations"?stations():s.tab==="events"?events():account())+'</main>'+bottomNav();
+  if(s.tab==="stations")s.tab="home";
+  A.innerHTML='<main class="content">'+(s.tab==="home"?home():s.tab==="events"?events():account())+'</main>'+bottomNav();
 }
 
 function changeAvatar(input){
@@ -228,6 +234,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=9",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=10",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
 render();
 load();
