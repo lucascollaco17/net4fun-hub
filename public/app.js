@@ -79,6 +79,49 @@ function floorplan(){
     sketchPs5("PS5 8","ps5-eight")+
   '</div></div></div>';
 }
+function eventPcByName(e,name){return e.stations.find(p=>p.name===name)}
+function eventSketchPc(name,e){
+  const p=eventPcByName(e,name);
+  const reserved=!!p?.reserved;
+  const cls=reserved?"reserved":"free";
+  const label=reserved?"Reservado":"Liberado";
+  const short=name.replace("PC ","");
+  const seat=reserved?"":name;
+  return '<button class="sketch-pc event-seat '+cls+'" data-event-seat="'+seat+'" title="'+name+' • '+label+'" aria-label="'+name+' '+label+'" '+(reserved?'disabled':'')+'><span>'+short+'</span><em>'+label+'</em></button>';
+}
+function eventPcRange(start,end,e){
+  let html="";
+  for(let i=start;i<=end;i++)html+=eventSketchPc("PC "+String(i).padStart(2,"0"),e);
+  return html;
+}
+function eventSketchPs5(cls){
+  return '<div class="sketch-ps5 event-ps5 '+cls+' unavailable" title="PS5 • Indisponível"><span class="ps5-stick"></span><span class="ps5-copy"><small>PS5</small><em>Indisponível</em></span></div>';
+}
+function eventFloorplan(e){
+  return '<div class="sketch-scroll event-map-scroll"><div class="sketch-layout"><div class="sketch-floor event-floor">'+
+    '<div class="sketch-zone sketch-bathrooms"></div>'+
+    '<div class="sketch-zone sketch-common">ÁREA COMUM</div>'+
+    '<div class="sketch-desk sketch-desk-left">'+eventPcRange(1,14,e)+'</div>'+
+    '<div class="sketch-desk sketch-desk-center">'+eventPcRange(15,28,e)+'</div>'+
+    '<div class="sketch-desk sketch-desk-right">'+eventPcRange(29,40,e)+'</div>'+
+    '<div class="sketch-vip sketch-vip-one">VIP</div>'+
+    '<div class="sketch-vip sketch-vip-two">VIP</div>'+
+    '<div class="sketch-wall sketch-wall-left-top"></div>'+
+    '<div class="sketch-wall sketch-wall-left-bottom"></div>'+
+    '<div class="sketch-wall sketch-wall-middle-bottom"></div>'+
+    '<div class="sketch-wall sketch-wall-right-bottom"></div>'+
+    '<div class="sketch-zone sketch-reception"></div>'+
+    eventSketchPs5("ps5-one")+
+    eventSketchPs5("ps5-two")+
+    eventSketchPs5("ps5-three")+
+    eventSketchPs5("ps5-four")+
+    eventSketchPs5("ps5-five")+
+    eventSketchPs5("ps5-six")+
+    eventSketchPs5("ps5-seven")+
+    eventSketchPs5("ps5-eight")+
+  '</div></div></div>';
+}
+
 
 function pcCard(p,event){
   const r=event&&p.reserved;
@@ -87,7 +130,7 @@ function pcCard(p,event){
 }
 
 function topbar(){
-  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=11" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
+  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=12" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
 }
 
 function home(){
@@ -119,7 +162,7 @@ function events(){
   if(!e)return topbar()+'<section class="card section"><h2>Corujão</h2><p class="muted">Nenhum evento disponível.</p></section>';
   return topbar()+
   '<section class="corujao-hero card section">'+
-    '<div class="owl-wrap"><img src="/corujao-owl.webp?v=11" alt="Corujão Net4Fun"></div>'+
+    '<div class="owl-wrap"><img src="/corujao-net4fun-final.webp?v=12" alt="Corujão Net4Fun"></div>'+
     '<div class="corujao-copy"><div class="eyebrow">Evento especial</div><h1>Corujão Net4Fun</h1><div class="schedule"><strong>Todos os sábados</strong><span>23:00 às 06:00</span></div><p>Escolha antecipadamente o PC que você quer usar durante o Corujão.</p><div class="event-stats"><div><b>'+e.freeCount+'</b><span>PCs disponíveis</span></div><div><b>'+e.reservedCount+'</b><span>reservados</span></div></div><button class="btn primary large" onclick="openEvent(\''+e.id+'\')">Escolher PC</button></div>'+
   '</section>';
 }
@@ -196,20 +239,33 @@ function openReport(){
 async function openEvent(id){
   const e=s.events.find(x=>x.id===id);
   if(!e)return;
-  const draw=()=>{
-    const pcs=e.stations.filter(p=>p.tier===s.eventGroup);
-    const m=modal('<div class="modal-head"><div><div class="eyebrow">Corujão • sábado 23:00–06:00</div><h2>Escolha seu PC</h2></div><button class="btn" data-close>Fechar</button></div><div class="segmented wide event-tabs"><button class="'+(s.eventGroup==="normal"?"active":"")+'" data-group="normal">PCs normais</button><button class="'+(s.eventGroup==="vip"?"active":"")+'" data-group="vip">PCs VIP</button></div><div class="notice compact">A reserva vale apenas para o Corujão. Durante o funcionamento normal, o PC continua seguindo a ordem de chegada.</div><div class="grid event-grid">'+pcs.map(p=>pcCard(p,e)).join("")+'</div>');
-    m.querySelector("[data-close]").onclick=()=>m.remove();
-    m.querySelectorAll("[data-group]").forEach(b=>b.onclick=()=>{s.eventGroup=b.dataset.group;m.remove();draw()});
-    m.querySelectorAll("[data-seat]").forEach(el=>{if(!el.dataset.seat)return;el.onclick=async()=>{
-      if(!confirm("Reservar "+el.dataset.seat+" para o próximo Corujão?"))return;
+  const free=e.stations.filter(p=>!p.reserved).length;
+  const reserved=e.stations.filter(p=>p.reserved).length;
+  const m=modal(
+    '<div class="modal-head"><div><div class="eyebrow">Corujão • sábado 23:00–06:00</div><h2>Escolha seu PC</h2></div><button class="btn" data-close>Fechar</button></div>'+
+    '<div class="event-reservation-summary"><span class="event-free"><b>'+free+'</b> Liberados</span><span class="event-reserved"><b>'+reserved+'</b> Reservados</span><span class="event-unavailable">PS5 indisponível para reserva</span></div>'+
+    '<div class="notice compact">Clique em um PC liberado para reservar. A reserva vale somente para o Corujão.</div>'+
+    eventFloorplan(e)
+  );
+  m.querySelector(".modalbox").classList.add("event-reservation-modal");
+  m.querySelector("[data-close]").onclick=()=>m.remove();
+  m.querySelectorAll("[data-event-seat]").forEach(el=>{
+    if(!el.dataset.eventSeat)return;
+    el.onclick=async()=>{
+      const pc=el.dataset.eventSeat;
+      if(!confirm("Confirmar a reserva do "+pc+" para o próximo Corujão?"))return;
       try{
-        await q("/api/events/"+encodeURIComponent(id)+"/reserve",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({stationId:el.dataset.seat})});
-        m.remove();toast("Reserva confirmada.");await load();
+        await q("/api/events/"+encodeURIComponent(id)+"/reserve",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({stationId:pc})
+        });
+        m.remove();
+        toast(pc+" reservado com sucesso.");
+        await load();
       }catch(err){toast(err.message)}
-    }});
-  };
-  draw();
+    };
+  });
 }
 
 async function install(){
@@ -234,6 +290,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=11",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=12",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
 render();
 load();
