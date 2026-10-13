@@ -87,7 +87,7 @@ function pcCard(p,event){
 }
 
 function topbar(){
-  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=10" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
+  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=11" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
 }
 
 function home(){
@@ -119,7 +119,7 @@ function events(){
   if(!e)return topbar()+'<section class="card section"><h2>Corujão</h2><p class="muted">Nenhum evento disponível.</p></section>';
   return topbar()+
   '<section class="corujao-hero card section">'+
-    '<div class="owl-wrap"><img src="/owl.svg" alt="Corujão Net4Fun"></div>'+
+    '<div class="owl-wrap"><img src="/corujao-owl.webp?v=11" alt="Corujão Net4Fun"></div>'+
     '<div class="corujao-copy"><div class="eyebrow">Evento especial</div><h1>Corujão Net4Fun</h1><div class="schedule"><strong>Todos os sábados</strong><span>23:00 às 06:00</span></div><p>Escolha antecipadamente o PC que você quer usar durante o Corujão.</p><div class="event-stats"><div><b>'+e.freeCount+'</b><span>PCs disponíveis</span></div><div><b>'+e.reservedCount+'</b><span>reservados</span></div></div><button class="btn primary large" onclick="openEvent(\''+e.id+'\')">Escolher PC</button></div>'+
   '</section>';
 }
@@ -234,6 +234,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=10",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=11",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
 render();
 load();
