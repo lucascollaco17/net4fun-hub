@@ -28,9 +28,48 @@ async function load(){
   }catch(e){toast(e.message)}
 }
 
-function st(x){return x==="free"?"Disponível":x==="busy"?"Em uso":"Indisponível"}
-function filterPC(group){return s.stations.filter(p=>p.type==="PC"&&p.tier===group)}
-function count(group,status){return s.stations.filter(p=>(group==="console"?p.type==="Console":p.type==="PC"&&p.tier===group)&&(!status||p.status===status)).length}
+function st(x){return x==="busy"?"Em uso":"Liberado"}
+function filterPC(group){return s.stations.filter(p=>p.type==="PC"&&(!group||p.tier===group))}
+function count(group,status){
+  return s.stations.filter(p=>{
+    const groupMatch=group==="console"?p.type==="Console":group==="all-pc"?p.type==="PC":p.type==="PC"&&p.tier===group;
+    return groupMatch&&(!status||p.status===status);
+  }).length
+}
+function pcByName(name){return s.stations.find(p=>p.name===name)}
+function seatNode(name,x,y,w=2.2,h=5.2,rot=0){
+  const p=pcByName(name);
+  const cls=p?.status==="busy"?"busy":"free";
+  const label=p?st(p.status):"Liberado";
+  return '<button class="map-seat '+cls+'" style="left:'+x+'%;top:'+y+'%;width:'+w+'%;height:'+h+'%;transform:rotate('+rot+'deg)" title="'+name+' • '+label+'" aria-label="'+name+' '+label+'"><span>'+name.replace("PC ","")+'</span></button>';
+}
+function floorplan(){
+  const seats=[
+    ["PC 01",25,3],["PC 02",29,3],["PC 03",33,3],["PC 04",37,3],["PC 05",41,3],
+    ["PC 06",25,11],["PC 07",29,11],["PC 08",33,11],["PC 09",37,11],["PC 10",41,11],
+    ["PC 11",49,3],["PC 12",53,3],["PC 13",49,11],["PC 14",53,11],
+    ["PC 15",80,3],["PC 16",80,11],["PC 17",80,19],["PC 18",80,27],["PC 19",80,35],["PC 20",80,43],
+    ["PC 21",23,48],["PC 22",23,56],["PC 23",23,64],["PC 24",23,72],
+    ["PC 25",7,48],["PC 26",7,56],["PC 27",7,64],["PC 28",7,72],
+    ["PC 29",31,48],["PC 30",31,56],["PC 31",31,64],["PC 32",31,72],
+    ["PC 33",47,24],["PC 34",51,24],["PC 35",47,32],["PC 36",51,32],
+    ["PC 37",63,24],["PC 38",67,24],["PC 39",63,32],["PC 40",67,32]
+  ];
+  const pcs=seats.map(a=>seatNode(...a)).join("");
+  return '<div class="map-scroll"><div class="floor-map">'+
+    '<div class="map-zone bathrooms">BANHEIROS</div>'+
+    '<div class="map-zone common">ÁREA COMUM</div>'+
+    '<div class="map-zone vip vip-one"><span>VIP</span></div>'+
+    '<div class="map-zone vip vip-two"><span>VIP</span></div>'+
+    '<div class="map-zone reception"><span>RECEPÇÃO</span></div>'+
+    '<div class="console-zone"><div class="console-label">PS5</div>'+
+      '<span class="console-station '+(pcByName("PS5 1")?.status==="busy"?"busy":"free")+'">PS5 1</span>'+
+      '<span class="console-station '+(pcByName("PS5 2")?.status==="busy"?"busy":"free")+'">PS5 2</span>'+
+      '<span class="console-station '+(pcByName("PS5 3")?.status==="busy"?"busy":"free")+'">PS5 3</span>'+
+      '<span class="console-station '+(pcByName("PS5 4")?.status==="busy"?"busy":"free")+'">PS5 4</span>'+
+    '</div>'+pcs+'<div class="floor-hint">Passe o mouse ou toque em um PC para ver o status</div>'+
+  '</div></div>';
+}
 
 function pcCard(p,event){
   const r=event&&p.reserved;
@@ -39,35 +78,27 @@ function pcCard(p,event){
 }
 
 function topbar(){
-  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=5" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
+  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=6" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
 }
 
 function home(){
-  const group=s.pcGroup;
-  const pcs=filterPC(group);
   return topbar()+
   '<section class="home-summary">'+
-    '<div class="metric"><span>PCs disponíveis</span><b>'+count(group,"free")+'</b><small>'+(group==="vip"?"VIP":"Normais")+'</small></div>'+
-    '<div class="metric"><span>PCs em uso</span><b>'+count(group,"busy")+'</b><small>'+(group==="vip"?"VIP":"Normais")+'</small></div>'+
-    '<div class="metric"><span>Consoles disponíveis</span><b>'+count("console","free")+'</b><small>PlayStation</small></div>'+
+    '<div class="metric"><span>PCs liberados</span><b>'+count("all-pc","free")+'</b><small>Total da loja</small></div>'+
+    '<div class="metric"><span>PCs em uso</span><b>'+count("all-pc","busy")+'</b><small>Total da loja</small></div>'+
+    '<div class="metric"><span>Consoles liberados</span><b>'+count("console","free")+'</b><small>PlayStation</small></div>'+
     '<div class="metric"><span>Consoles em uso</span><b>'+count("console","busy")+'</b><small>PlayStation</small></div>'+
   '</section>'+
-  '<section class="card section">'+
-    '<div class="section-title"><div><div class="eyebrow">Disponibilidade rápida</div><h2>PCs</h2></div><div class="segmented"><button class="'+(group==="normal"?"active":"")+'" onclick="s.pcGroup=\'normal\';render()">PCs normais</button><button class="'+(group==="vip"?"active":"")+'" onclick="s.pcGroup=\'vip\';render()">PCs VIP</button></div></div>'+
-    '<div class="grid preview-grid">'+pcs.slice(0,12).map(p=>pcCard(p)).join("")+'</div>'+
-    '<div class="section-footer"><button class="btn primary" onclick="s.tab=\'stations\';render()">Ver todos os PCs</button><span class="muted">Uso normal por ordem de chegada.</span></div>'+
-  '</section>';
+  '<section class="card section home-map-entry"><div><div class="eyebrow">Mapa da lan house</div><h2>Veja onde estão os equipamentos liberados</h2><p class="muted">Consulte o mapa completo da Net4Fun e veja os PCs em uso e liberados.</p></div><button class="btn primary large" onclick="s.tab=\'stations\';render()">Abrir mapa</button></section>';
 }
 
 function stations(){
-  const mode=s.pcGroup;
-  const arr=mode==="console"?s.stations.filter(p=>p.type==="Console"):filterPC(mode);
   return topbar()+
-  '<section class="card section">'+
-    '<div class="eyebrow">Disponibilidade</div><h1 class="page-title">PCs & Consoles</h1>'+
-    '<div class="segmented wide"><button class="'+(mode==="normal"?"active":"")+'" onclick="s.pcGroup=\'normal\';render()">PCs normais</button><button class="'+(mode==="vip"?"active":"")+'" onclick="s.pcGroup=\'vip\';render()">PCs VIP</button><button class="'+(mode==="console"?"active":"")+'" onclick="s.pcGroup=\'console\';render()">Consoles</button></div>'+
-    '<div class="legend"><span><i class="dot free-dot"></i>Disponível</span><span><i class="dot busy-dot"></i>Em uso</span><span><i class="dot off-dot"></i>Indisponível</span></div>'+
-    '<div class="grid">'+arr.map(p=>pcCard(p)).join("")+'</div>'+
+  '<section class="card section floor-section">'+
+    '<div class="floor-header"><div><div class="eyebrow">Mapa da Net4Fun</div><h1 class="page-title">PCs & Consoles</h1><p class="muted">Mapa adaptado à disposição da lan house para localizar rapidamente cada equipamento.</p></div>'+
+    '<div class="map-status"><span><i class="dot free-dot"></i><b>'+count("all-pc","free")+'</b> Liberados</span><span><i class="dot busy-dot"></i><b>'+count("all-pc","busy")+'</b> Em uso</span></div></div>'+
+    '<div class="legend map-main-legend"><span><i class="dot free-dot"></i>Liberado</span><span><i class="dot busy-dot"></i>Em uso</span></div>'+
+    floorplan()+
   '</section>';
 }
 
@@ -190,6 +221,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=5",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=6",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
 render();
 load();

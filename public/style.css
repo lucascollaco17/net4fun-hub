@@ -118,8 +118,7 @@ body{overflow-x:hidden}
   .official-logo{width:150px;height:80px}
 }
 @media(max-width:600px){
-  .content{padding:12px 10px 28px;margin-left:78px}
-  .sidebar{width:78px}
+  .content{padding:12px 10px 106px;margin-left:0}
   .topbar{align-items:flex-start}
   .welcome{font-size:19px}
   .hours-card{min-width:142px;padding:9px 10px}
@@ -145,3 +144,47 @@ body{overflow-x:hidden}
 .nav-tab:hover{background:rgba(53,206,255,.06);color:#dff8ff}
 .nav-tab.active{background:rgba(53,206,255,.11);color:#e9fbff;box-shadow:inset 0 0 0 1px rgba(53,206,255,.18)}
 .nav-tab.installed{color:#597181}
+
+.home-map-entry{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.home-map-entry h2{margin:5px 0 8px}
+.floor-section{padding:20px}
+.floor-header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.floor-header p{margin:0;max-width:720px}
+.map-status{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.map-status span{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:#0b1822;border-radius:8px;padding:9px 11px;color:#9db3c1;font-size:12px}
+.map-status b{color:#f1fbff;font-size:18px}
+.map-main-legend{margin-top:16px}
+.map-scroll{overflow-x:auto;overflow-y:hidden;padding:2px 0 8px;scrollbar-color:#21465b #071019}
+.floor-map{position:relative;width:100%;min-width:880px;aspect-ratio:1.72/1;background:linear-gradient(145deg,#111b23,#0c151d);border:2px solid #2b5267;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02),inset 0 0 80px rgba(0,0,0,.35)}
+.floor-map:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(73,119,145,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(73,119,145,.05) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.map-zone{position:absolute;display:grid;place-items:center;border:1px solid rgba(182,208,220,.28);background:#667078;color:#071019;font-weight:950;letter-spacing:.05em;font-size:13px;z-index:1}
+.bathrooms{left:2%;top:2%;width:17%;height:18%;background:#8b4212;color:#f7dfc8}
+.common{left:20%;top:2%;width:7.5%;height:36%;background:#89939a;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px}
+.vip{background:#78838b;color:#10161a}
+.vip-one{left:44%;top:20%;width:12%;height:24%}
+.vip-two{left:60%;top:20%;width:12%;height:24%}
+.vip span{background:rgba(255,255,255,.25);padding:5px 9px;border:1px solid rgba(255,255,255,.25);font-size:18px}
+.reception{left:54%;top:58%;width:25%;height:24%;background:#343c42;color:#d8e4ea}
+.console-zone{position:absolute;left:2%;top:47%;width:15%;height:40%;padding:8px;border-left:6px solid #05090d;display:grid;grid-template-columns:1fr;gap:7px;align-content:center;z-index:2}
+.console-label{color:#c6d8e2;font-size:11px;font-weight:900;letter-spacing:.1em}
+.console-station{display:flex;align-items:center;justify-content:center;height:34px;border-radius:5px;border:1px solid #315b72;background:#111c24;color:#c4d7e2;font-size:10px;font-weight:850}
+.console-station.free{box-shadow:inset 4px 0 0 var(--ok)}
+.console-station.busy{box-shadow:inset 4px 0 0 var(--bad)}
+.map-seat{position:absolute;z-index:5;border-radius:4px;border:1px solid #2e617d;background:#0f3347;color:#dff8ff;padding:0;display:grid;place-items:center;font-size:8px;font-weight:950;box-shadow:0 2px 8px rgba(0,0,0,.28);transition:.15s ease}
+.map-seat span{pointer-events:none}
+.map-seat.free{border-color:#34d98a;box-shadow:inset 3px 0 0 var(--ok),0 2px 8px rgba(0,0,0,.28)}
+.map-seat.busy{border-color:#ff7184;box-shadow:inset 3px 0 0 var(--bad),0 2px 8px rgba(0,0,0,.28)}
+.map-seat:hover,.map-seat:focus{transform:scale(1.28)!important;z-index:10;outline:none;filter:brightness(1.18)}
+.floor-hint{position:absolute;right:2%;bottom:2%;color:#708b9d;font-size:10px;letter-spacing:.02em}
+@media(max-width:900px){
+  .floor-header{align-items:flex-start;flex-direction:column}
+  .map-status{justify-content:flex-start}
+}
+@media(max-width:600px){
+  .home-map-entry{align-items:flex-start;flex-direction:column}
+  .floor-section{padding:12px}
+  .floor-map{min-width:760px}
+  .floor-hint{display:none}
+  .bottom-nav{bottom:8px;width:calc(100% - 12px);gap:2px;padding:5px}
+  .nav-tab{font-size:10px;padding:10px 3px}
+}

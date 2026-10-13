@@ -2,7 +2,7 @@
   "id":"/",
   "name":"Net4Fun Hub",
   "short_name":"Net4Fun",
-  "description":"Acompanhe saldo, disponibilidade de PCs e reservas de Corujão.",
+  "description":"Acompanhe saldo, mapa de PCs e reservas de Corujão.",
   "start_url":"/?source=pwa",
   "scope":"/",
   "display":"standalone",
@@ -11,12 +11,11 @@
   "orientation":"portrait-primary",
   "prefer_related_applications":false,
   "icons":[
-    {"src":"/icon.svg","sizes":"192x192","type":"image/svg+xml","purpose":"any"},
-    {"src":"/icon.svg","sizes":"512x512","type":"image/svg+xml","purpose":"any"},
-    {"src":"/icon.svg","sizes":"512x512","type":"image/svg+xml","purpose":"maskable"}
+    {"src":"/net4fun-logo.webp?v=6","sizes":"1518x1518","type":"image/webp","purpose":"any"},
+    {"src":"/net4fun-logo.webp?v=6","sizes":"1518x1518","type":"image/webp","purpose":"maskable"}
   ],
   "shortcuts":[
-    {"name":"PCs & Consoles","url":"/?tab=stations"},
+    {"name":"Mapa de PCs","url":"/?tab=stations"},
     {"name":"Corujão","url":"/?tab=events"}
   ]
 }
