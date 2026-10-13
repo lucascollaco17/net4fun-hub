@@ -341,3 +341,28 @@ body{overflow-x:hidden}
 @media(max-width:700px){
   .sketch-ps5 .ps5-copy em{font-size:8px}
 }
+
+/* V12 — Corujão com reserva no mesmo mapa */
+.owl-wrap img{width:min(460px,94%);max-height:410px;object-fit:contain}
+.event-reservation-modal{width:min(1100px,96vw)!important;max-height:92vh!important}
+.event-reservation-summary{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 12px}
+.event-reservation-summary span{display:flex;align-items:center;gap:5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#0d1821;color:#9db4c3;font-size:12px;font-weight:800}
+.event-reservation-summary b{font-size:18px;color:#f0fbff}
+.event-reservation-summary .event-free{border-color:rgba(54,207,255,.35)}
+.event-reservation-summary .event-reserved{border-color:rgba(255,102,122,.35)}
+.event-reservation-summary .event-unavailable{border-color:rgba(134,160,180,.28);color:#9aa8b3}
+.event-map-scroll{margin-top:12px}
+.event-floor .event-seat{overflow:visible}
+.event-floor .event-seat em{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);font-style:normal;font-size:6px;font-weight:950;white-space:nowrap;opacity:.9}
+.event-floor .event-seat.free{background:#0e4c65!important;border-color:#36cfff!important;color:#d9faff!important;box-shadow:0 0 9px rgba(54,207,255,.18)!important}
+.event-floor .event-seat.free em{color:#8ff3ff}
+.event-floor .event-seat.reserved{background:#742a39!important;border-color:#ff667a!important;color:#fff0f2!important;box-shadow:0 0 9px rgba(255,102,122,.16)!important;cursor:not-allowed}
+.event-floor .event-seat.reserved em{color:#ffc2ca}
+.event-floor .event-ps5.unavailable{opacity:.62;filter:saturate(.25)}
+.event-floor .event-ps5.unavailable .ps5-stick{background:#758895!important;border-color:#9caeba!important;box-shadow:none!important}
+.event-floor .event-ps5.unavailable .ps5-copy em{color:#c3cdd3!important;background:rgba(140,155,165,.12)!important;border-color:rgba(140,155,165,.26)!important}
+@media(max-width:700px){
+  .event-reservation-modal{width:98vw!important;padding:12px!important}
+  .event-floor .event-seat em{font-size:5px}
+  .owl-wrap img{max-height:300px}
+}
