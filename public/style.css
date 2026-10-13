@@ -286,3 +286,43 @@ body{overflow-x:hidden}
   .sketch-pc{font-size:10px}
   .sketch-ps5 small{font-size:10px}
 }
+
+/* V9 — planta baseada literalmente no esboço original */
+.sketch-scroll{overflow:auto;padding:0 0 10px;display:block}
+.sketch-layout{display:flex!important;justify-content:center!important;align-items:flex-start!important;min-width:630px!important;width:100%!important}
+.sketch-floor{position:relative!important;width:610px!important;min-width:610px!important;aspect-ratio:.887/1!important;background:#273640!important;border:2px solid #2b5d75!important;overflow:hidden!important;box-shadow:inset 0 0 35px rgba(0,0,0,.22)!important}
+.sketch-bathrooms{left:0!important;top:0!important;width:22%!important;height:14.4%!important;background:#8a4315!important;border:1px solid #b75f24!important}
+.sketch-common{left:22.7%!important;top:0!important;width:5.8%!important;height:40.5%!important;background:#596770!important;border:1px solid #8796a0!important;color:#091117!important;font-size:12px!important;writing-mode:vertical-rl!important;transform:rotate(180deg)!important}
+.sketch-desk{position:absolute!important;z-index:4!important;background:#05090d!important;padding:4px!important;display:grid!important;gap:5px!important}
+.sketch-desk-left{left:29.6%!important;top:0!important;width:10%!important;height:40.5%!important;grid-template-columns:1fr 1fr!important;grid-template-rows:repeat(7,1fr)!important}
+.sketch-desk-center{left:55.4%!important;top:0!important;width:10%!important;height:40.5%!important;grid-template-columns:1fr 1fr!important;grid-template-rows:repeat(7,1fr)!important}
+.sketch-desk-right{right:0!important;top:0!important;width:5.1%!important;height:52.2%!important;grid-template-columns:1fr!important;grid-template-rows:repeat(12,1fr)!important;gap:4px!important}
+.sketch-pc{font-size:11px!important;line-height:1!important;font-weight:950!important;border-radius:3px!important}
+.sketch-pc span{transform:none!important}
+.sketch-vip{position:absolute!important;z-index:3!important;display:grid!important;place-items:center!important;top:14.2%!important;width:12%!important;height:7.2%!important;background:#717d84!important;border:1px solid #9aa7ae!important;color:#0b1115!important;font-size:22px!important;font-weight:900!important;letter-spacing:.08em!important}
+.sketch-vip-one{left:41.5%!important}
+.sketch-vip-two{left:74.2%!important}
+.sketch-wall{position:absolute!important;z-index:3!important;background:#05090d!important}
+.sketch-wall-left-top{left:0!important;top:14.4%!important;width:5.1%!important;height:26.1%!important}
+.sketch-wall-left-bottom{left:0!important;top:52.7%!important;width:5.1%!important;height:47.3%!important}
+.sketch-wall-middle-bottom{left:29.6%!important;top:52.7%!important;width:5.1%!important;height:47.3%!important}
+.sketch-wall-right-bottom{right:0!important;top:74.9%!important;width:5.1%!important;height:25.1%!important}
+.sketch-reception{left:59.2%!important;top:52.2%!important;width:40.8%!important;height:22.7%!important;background:#30383e!important;border:1px solid #44535c!important}
+.sketch-ps5{position:absolute!important;z-index:9!important;display:flex!important;align-items:center!important;gap:5px!important;color:#d8e8ef!important;font-size:12px!important;font-weight:900!important}
+.sketch-ps5 .ps5-stick{display:block!important;width:4px!important;height:28px!important;background:#e9f8ff!important;border:1px solid #6f8b9a!important}
+.sketch-ps5 small{font-size:11px!important;padding:3px 5px!important;border:1px solid #62747f!important;background:#43515a!important;color:#eaf6fb!important;font-weight:900!important}
+.ps5-one{left:1.6%!important;top:17.3%!important}
+.ps5-two{left:1.6%!important;top:30.6%!important}
+.ps5-three{left:1.6%!important;top:63.4%!important}
+.ps5-four{left:1.6%!important;top:88.3%!important}
+.ps5-five{left:30.2%!important;top:63.4%!important}
+.ps5-six{left:30.2%!important;top:88.3%!important}
+.ps5-seven{right:.8%!important;top:78.4%!important}
+.ps5-eight{right:.8%!important;top:92.4%!important}
+.sketch-legend{display:none!important}
+@media(max-width:700px){
+  .sketch-layout{justify-content:flex-start!important;min-width:630px!important}
+  .sketch-floor{width:610px!important;min-width:610px!important}
+  .sketch-pc{font-size:11px!important}
+  .sketch-ps5 small{font-size:11px!important}
+}

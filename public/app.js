@@ -65,17 +65,17 @@ function floorplan(){
     '<div class="sketch-vip sketch-vip-two">VIP</div>'+
     '<div class="sketch-wall sketch-wall-left-top"></div>'+
     '<div class="sketch-wall sketch-wall-left-bottom"></div>'+
-    '<div class="sketch-wall sketch-wall-middle-top"></div>'+
     '<div class="sketch-wall sketch-wall-middle-bottom"></div>'+
-    '<div class="sketch-wall sketch-wall-right-mid"></div>'+
     '<div class="sketch-wall sketch-wall-right-bottom"></div>'+
-    '<div class="sketch-zone sketch-reception">RECEPÇÃO</div>'+
+    '<div class="sketch-zone sketch-reception"></div>'+
     sketchPs5("PS5 1","ps5-one")+
     sketchPs5("PS5 2","ps5-two")+
     sketchPs5("PS5 3","ps5-three")+
     sketchPs5("PS5 4","ps5-four")+
     sketchPs5("PS5 5","ps5-five")+
     sketchPs5("PS5 6","ps5-six")+
+    sketchPs5("PS5 7","ps5-seven")+
+    sketchPs5("PS5 8","ps5-eight")+
   '</div></div></div>';
 }
 
@@ -86,7 +86,7 @@ function pcCard(p,event){
 }
 
 function topbar(){
-  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=8" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
+  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=9" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
 }
 
 function home(){
@@ -228,6 +228,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=8",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=9",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
 render();
 load();
