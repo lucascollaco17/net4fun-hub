@@ -37,37 +37,50 @@ function count(group,status){
   }).length
 }
 function pcByName(name){return s.stations.find(p=>p.name===name)}
-function seatNode(name,x,y,w=2.2,h=5.2,rot=0){
+function sketchPc(name){
   const p=pcByName(name);
   const cls=p?.status==="busy"?"busy":"free";
   const label=p?st(p.status):"Liberado";
-  return '<button class="map-seat '+cls+'" style="left:'+x+'%;top:'+y+'%;width:'+w+'%;height:'+h+'%;transform:rotate('+rot+'deg)" title="'+name+' • '+label+'" aria-label="'+name+' '+label+'"><span>'+name.replace("PC ","")+'</span></button>';
+  const short=name.replace("PC ","");
+  return '<button class="sketch-pc '+cls+'" title="'+name+' • '+label+'" aria-label="'+name+' '+label+'"><span>'+short+'</span></button>';
+}
+function pcRange(start,end){
+  let html="";
+  for(let i=start;i<=end;i++)html+=sketchPc("PC "+String(i).padStart(2,"0"));
+  return html;
+}
+function sketchPs5(name,cls){
+  const p=pcByName(name);
+  const state=p?.status==="busy"?"busy":"free";
+  return '<div class="sketch-ps5 '+cls+' '+state+'" title="'+name+' • '+st(p?.status)+'"><span class="ps5-stick"></span><small>PS5</small></div>';
 }
 function floorplan(){
-  const seats=[
-    ["PC 01",25,3],["PC 02",29,3],["PC 03",33,3],["PC 04",37,3],["PC 05",41,3],
-    ["PC 06",25,11],["PC 07",29,11],["PC 08",33,11],["PC 09",37,11],["PC 10",41,11],
-    ["PC 11",49,3],["PC 12",53,3],["PC 13",49,11],["PC 14",53,11],
-    ["PC 15",80,3],["PC 16",80,11],["PC 17",80,19],["PC 18",80,27],["PC 19",80,35],["PC 20",80,43],
-    ["PC 21",23,48],["PC 22",23,56],["PC 23",23,64],["PC 24",23,72],
-    ["PC 25",7,48],["PC 26",7,56],["PC 27",7,64],["PC 28",7,72],
-    ["PC 29",31,48],["PC 30",31,56],["PC 31",31,64],["PC 32",31,72],
-    ["PC 33",47,24],["PC 34",51,24],["PC 35",47,32],["PC 36",51,32],
-    ["PC 37",63,24],["PC 38",67,24],["PC 39",63,32],["PC 40",67,32]
-  ];
-  const pcs=seats.map(a=>seatNode(...a)).join("");
-  return '<div class="map-scroll"><div class="floor-map">'+
-    '<div class="map-zone bathrooms">BANHEIROS</div>'+
-    '<div class="map-zone common">ÁREA COMUM</div>'+
-    '<div class="map-zone vip vip-one"><span>VIP</span></div>'+
-    '<div class="map-zone vip vip-two"><span>VIP</span></div>'+
-    '<div class="map-zone reception"><span>RECEPÇÃO</span></div>'+
-    '<div class="console-zone"><div class="console-label">PS5</div>'+
-      '<span class="console-station '+(pcByName("PS5 1")?.status==="busy"?"busy":"free")+'">PS5 1</span>'+
-      '<span class="console-station '+(pcByName("PS5 2")?.status==="busy"?"busy":"free")+'">PS5 2</span>'+
-      '<span class="console-station '+(pcByName("PS5 3")?.status==="busy"?"busy":"free")+'">PS5 3</span>'+
-      '<span class="console-station '+(pcByName("PS5 4")?.status==="busy"?"busy":"free")+'">PS5 4</span>'+
-    '</div>'+pcs+'<div class="floor-hint">Passe o mouse ou toque em um PC para ver o status</div>'+
+  return '<div class="sketch-scroll"><div class="sketch-layout">'+
+    '<div class="sketch-floor">'+
+      '<div class="sketch-zone sketch-bathrooms"></div>'+
+      '<div class="sketch-zone sketch-common">ÁREA COMUM</div>'+
+      '<div class="sketch-desk sketch-desk-left">'+pcRange(1,14)+'</div>'+
+      '<div class="sketch-desk sketch-desk-center">'+pcRange(15,28)+'</div>'+
+      '<div class="sketch-desk sketch-desk-right">'+pcRange(29,40)+'</div>'+
+      '<div class="sketch-vip sketch-vip-one">VIP</div>'+
+      '<div class="sketch-vip sketch-vip-two">VIP</div>'+
+      '<div class="sketch-wall sketch-wall-left"></div>'+
+      '<div class="sketch-wall sketch-wall-middle"></div>'+
+      '<div class="sketch-wall sketch-wall-right-bottom"></div>'+
+      '<div class="sketch-zone sketch-reception">RECEPÇÃO</div>'+
+      sketchPs5("PS5 1","ps5-one")+
+      sketchPs5("PS5 2","ps5-two")+
+      sketchPs5("PS5 3","ps5-three")+
+      sketchPs5("PS5 4","ps5-four")+
+    '</div>'+
+    '<aside class="sketch-legend">'+
+      '<h3>LEGENDAS</h3>'+
+      '<div class="legend-row"><span class="legend-pc"></span><b>COMPUTADORES (PC\'S)</b></div>'+
+      '<div class="legend-row"><span class="legend-ps5"></span><b>PS5</b></div>'+
+      '<div class="legend-row"><span class="legend-bath"></span><b>BANHEIROS</b></div>'+
+      '<div class="legend-row"><span class="legend-reception"></span><b>RECEPÇÃO</b></div>'+
+      '<div class="legend-status"><span><i class="status-swatch liberated"></i>Liberado</span><span><i class="status-swatch occupied"></i>Em uso</span></div>'+
+    '</aside>'+
   '</div></div>';
 }
 
@@ -78,7 +91,7 @@ function pcCard(p,event){
 }
 
 function topbar(){
-  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=6" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
+  return '<div class="topbar"><div class="brand-welcome"><img class="official-logo" src="/net4fun-logo.webp?v=7" alt="Net4Fun"><div class="welcome-block"><div class="eyebrow">Bem-vindo</div><div class="welcome">'+(s.me?.name||"Cliente")+'</div></div></div><div class="hours-card"><span>Horas disponíveis</span><strong>'+mins(s.me?.remainingMinutes||0)+'</strong></div></div>';
 }
 
 function home(){
@@ -94,10 +107,9 @@ function home(){
 
 function stations(){
   return topbar()+
-  '<section class="card section floor-section">'+
-    '<div class="floor-header"><div><div class="eyebrow">Mapa da Net4Fun</div><h1 class="page-title">PCs & Consoles</h1><p class="muted">Mapa adaptado à disposição da lan house para localizar rapidamente cada equipamento.</p></div>'+
-    '<div class="map-status"><span><i class="dot free-dot"></i><b>'+count("all-pc","free")+'</b> Liberados</span><span><i class="dot busy-dot"></i><b>'+count("all-pc","busy")+'</b> Em uso</span></div></div>'+
-    '<div class="legend map-main-legend"><span><i class="dot free-dot"></i>Liberado</span><span><i class="dot busy-dot"></i>Em uso</span></div>'+
+  '<section class="card section sketch-section">'+
+    '<div class="eyebrow">Disponibilidade</div>'+
+    '<h1 class="page-title">PCs & Consoles</h1>'+
     floorplan()+
   '</section>';
 }
@@ -221,6 +233,6 @@ async function install(){
 
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();s.install=e;render()});
 addEventListener("appinstalled",()=>{s.install=null;toast("Net4Fun Hub instalado.");render()});
-if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=6",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=7",{updateViaCache:"none"}).catch(e=>console.warn("SW",e)));
 render();
 load();
