@@ -366,3 +366,25 @@ body{overflow-x:hidden}
   .event-floor .event-seat em{font-size:5px}
   .owl-wrap img{max-height:300px}
 }
+
+/* V13 — arte do Corujão preenchendo o card sem faixas laterais */
+.owl-wrap{
+  min-height:0!important;
+  aspect-ratio:16/9;
+  overflow:hidden!important;
+  padding:0!important;
+  background:#07111a!important;
+}
+.owl-wrap img{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  display:block!important;
+}
+@media(max-width:700px){
+  .owl-wrap{aspect-ratio:16/9!important;min-height:0!important}
+  .owl-wrap img{width:100%!important;height:100%!important;max-height:none!important;object-fit:cover!important}
+}
