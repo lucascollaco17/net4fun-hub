@@ -388,3 +388,21 @@ body{overflow-x:hidden}
   .owl-wrap{aspect-ratio:16/9!important;min-height:0!important}
   .owl-wrap img{width:100%!important;height:100%!important;max-height:none!important;object-fit:cover!important}
 }
+
+/* V14 — usar imagem estável preenchendo todo o card */
+.corujao-hero .owl-wrap{
+  padding:0!important;
+  overflow:hidden!important;
+  min-height:0!important;
+  aspect-ratio:16/9!important;
+  background:#07111a!important;
+}
+.corujao-hero .owl-wrap img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+}
