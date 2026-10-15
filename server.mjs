@@ -36,6 +36,8 @@ const mime={
   ".css":"text/css; charset=utf-8",
   ".js":"application/javascript; charset=utf-8",
   ".svg":"image/svg+xml",
+  ".webp":"image/webp",
+  ".png":"image/png",
   ".webmanifest":"application/manifest+json"
 };
 
@@ -61,11 +63,13 @@ http.createServer(async(req,res)=>{
     const u=new URL(req.url,"http://localhost");
     console.log("[request]",req.method,u.pathname);
 
-    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"2.3.0",mode:"demo"});
+    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"3.0.0",mode:"demo"});
     if(u.pathname==="/api/me")return send(res,200,{user:{
       name:"Cliente Demo",
       login:"cliente.demo",
-      remainingMinutes:522
+      remainingMinutes:522,
+      normalMinutes:522,
+      vipMinutes:180
     }});
     if(u.pathname==="/api/stations")return send(res,200,{source:"demo",stations});
 
@@ -103,8 +107,17 @@ http.createServer(async(req,res)=>{
     if(u.pathname==="/api/purchase-intent"&&req.method==="POST"){
       const b=await body(req);
       const hours=Number(b.hours||0);
-      if(![1,3,5,10].includes(hours))return send(res,400,{error:"Pacote inválido"});
-      return send(res,201,{ok:true,id:crypto.randomUUID(),hours,status:"demo"});
+      const type=String(b.type||"normal");
+      const allowed={normal:{1:4,3:11,5:18},vip:{1:7,3:18,5:32}};
+      if(!allowed[type]||!allowed[type][hours])return send(res,400,{error:"Pacote inválido"});
+      return send(res,201,{ok:true,id:crypto.randomUUID(),type,hours,price:allowed[type][hours],status:"demo"});
+    }
+
+    if(u.pathname==="/api/password"&&req.method==="POST"){
+      const b=await body(req);
+      const password=String(b.password||"");
+      if(password.length<4)return send(res,400,{error:"Senha muito curta"});
+      return send(res,200,{ok:true,status:"demo"});
     }
 
     const rel=u.pathname==="/"?"/index.html":decodeURIComponent(u.pathname);
@@ -127,4 +140,4 @@ http.createServer(async(req,res)=>{
     if(!res.headersSent)send(res,500,{error:"Erro interno"});
     else res.end();
   }
-}).listen(PORT,()=>console.log("Net4Fun Hub v2 online"));
+}).listen(PORT,()=>console.log("Net4Fun Hub v3 online"));
