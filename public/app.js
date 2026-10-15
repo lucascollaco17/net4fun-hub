@@ -6,13 +6,21 @@ let s={
   device:"pc",
   selectedEventPc:null,
   showPassword:false,
-  installPrompt:null
+  installPrompt:null,
+  games:{pc:[],console:[]},
+  announcements:[],
+  adminToken:sessionStorage.getItem("net4funAdminToken")||null,
+  adminLogin:sessionStorage.getItem("net4funAdminLogin")||null,
+  isAdmin:!!sessionStorage.getItem("net4funAdminToken"),
+  adminSuggestions:[]
 };
 
 const A=document.querySelector("#app");
 const q=(u,o)=>fetch(u,o).then(async r=>{const j=await r.json();if(!r.ok)throw Error(j.error||"Erro");return j});
 const mins=n=>String(Math.floor((n||0)/60)).padStart(2,"0")+"h "+String((n||0)%60).padStart(2,"0")+"min";
 const money=v=>Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+const adminHeaders=()=>({"Authorization":"Bearer "+s.adminToken,"Content-Type":"application/json"});
 
 function toast(t,ms=3000){
   const d=document.createElement("div");
@@ -24,11 +32,21 @@ function toast(t,ms=3000){
 
 async function load(){
   try{
-    const [m,p,e]=await Promise.all([q("/api/me"),q("/api/stations"),q("/api/events")]);
+    const [m,p,e,g,a]=await Promise.all([
+      q("/api/me"),
+      q("/api/stations"),
+      q("/api/events"),
+      q("/api/games"),
+      q("/api/announcements")
+    ]);
     s.me=m.user;
     s.stations=p.stations||[];
     s.events=e.events||[];
+    s.games=g.games||{pc:[],console:[]};
+    s.announcements=a.announcements||[];
+    if(s.isAdmin)await loadAdminSuggestions(true);
     render();
+    setTimeout(showPendingAnnouncement,80);
   }catch(e){toast(e.message)}
 }
 
@@ -42,7 +60,7 @@ function byName(name){return s.stations.find(p=>p.name===name)}
 
 function header(){
   return '<header class="app-header">'+
-    '<div class="brand-panel"><img src="/net4fun-logo.webp?v=16" alt="Net4Fun"></div>'+
+    '<div class="brand-panel"><img src="/net4fun-logo.webp?v=17" alt="Net4Fun"></div>'+
     '<div class="balance-stack">'+
       '<div class="balance"><span>Horas normais</span><strong>'+mins(normalMinutes())+'</strong></div>'+
       '<div class="balance vip-balance"><span>Horas VIP</span><strong>'+mins(vipMinutes())+'</strong></div>'+
@@ -50,15 +68,15 @@ function header(){
   '</header>';
 }
 
-const pcGames=["Counter-Strike 2","VALORANT","League of Legends","Fortnite","GTA V","Minecraft","Rocket League","Roblox","Dota 2","Overwatch 2"];
-const consoleGames=["EA SPORTS FC","GTA V","Fortnite","Mortal Kombat","Call of Duty","Tekken","Rocket League","Minecraft"];
+const defaultPcGames=["Counter-Strike 2","VALORANT","League of Legends","Fortnite","GTA V","Minecraft","Rocket League","Roblox","Dota 2","Overwatch 2"];
+const defaultConsoleGames=["EA SPORTS FC","GTA V","Fortnite","Mortal Kombat","Call of Duty","Tekken","Rocket League","Minecraft"];
 
 function gameLibrary(){
-  const games=s.device==="pc"?pcGames:consoleGames;
+  const games=(s.games?.[s.device]?.length?s.games[s.device]:(s.device==="pc"?defaultPcGames:defaultConsoleGames));
   return '<section class="library-card">'+
     '<div class="section-kicker">Biblioteca de jogos</div>'+
     '<div class="game-strip" aria-label="Biblioteca de jogos">'+
-      games.map((g,i)=>'<article class="game-card"><div class="game-mark">'+String(i+1).padStart(2,"0")+'</div><strong>'+g+'</strong><small>'+(s.device==="pc"?"PC":"Console")+'</small></article>').join("")+
+      games.map((g,i)=>'<article class="game-card"><div class="game-mark">'+String(i+1).padStart(2,"0")+'</div><strong>'+esc(g)+'</strong><small>'+(s.device==="pc"?"PC":"Console")+'</small></article>').join("")+
     '</div>'+
   '</section>';
 }
@@ -172,7 +190,7 @@ function events(){
   const reserved=e.stations.filter(x=>x.reserved).length;
   return header()+
     '<section class="event-top">'+
-      '<div class="event-image"><img src="/corujao-net4fun-hq-v16.webp?v=16" alt="Corujão Net4Fun"></div>'+
+      '<div class="event-image"><img src="/corujao-net4fun-hq-v16.webp?v=17" alt="Corujão Net4Fun"></div>'+
       '<div class="event-side">'+
         '<div class="event-date"><span class="section-kicker">Próximo Corujão</span><strong>'+nextSaturday()+'</strong><small>23:00 às 06:00</small></div>'+
         '<div class="reservation-box"><span class="section-kicker">Reserva</span>'+
@@ -236,6 +254,9 @@ function account(){
       '</div>'+
       '<button class="install-button" data-action="install-app">Instalar aplicativo</button>'+
       '<p class="install-help">No Android, o navegador abrirá a instalação quando disponível. No iPhone, use Compartilhar → Adicionar à Tela de Início.</p>'+
+      (s.isAdmin
+        ?'<button class="admin-access active" data-tab="admin">Painel administrativo</button>'
+        :'<button class="admin-access" data-action="admin-login">Acesso ADM</button>')+
     '</section>';
 }
 function packageCard(p){
@@ -283,6 +304,138 @@ async function buyPackage(type,hours,price){
   }catch(e){toast(e.message)}
 }
 
+function suggestionBubble(){
+  if(s.isAdmin||s.tab==="admin")return "";
+  return '<button class="suggestion-bubble" data-action="suggestion" aria-label="Enviar sugestão"><span>💡</span><b>Sugestões</b></button>';
+}
+
+function openSuggestion(){
+  const m=modal(
+    '<div class="modal-head"><div><span class="section-kicker">Sua opinião importa</span><h2>Enviar sugestão</h2></div><button class="ghost" data-close>Fechar</button></div>'+
+    '<label class="field"><span>Tipo de sugestão</span><select id="suggestionType"><option value="game">Adicionar um jogo</option><option value="general">Outra sugestão</option></select></label>'+
+    '<div id="gameSuggestionFields">'+
+      '<label class="field"><span>Nome do jogo</span><input id="suggestionGame" placeholder="Ex.: Far Cry 3"></label>'+
+      '<label class="field"><span>Plataforma</span><select id="suggestionPlatform"><option value="pc">PC</option><option value="console">Console</option></select></label>'+
+    '</div>'+
+    '<label class="field"><span>Comentário opcional</span><textarea id="suggestionMessage" rows="4" placeholder="Conte um pouco mais sobre sua sugestão"></textarea></label>'+
+    '<button class="primary-action full" id="sendSuggestion">Enviar sugestão</button>'
+  );
+  const type=m.querySelector("#suggestionType");
+  const gameFields=m.querySelector("#gameSuggestionFields");
+  type.onchange=()=>{gameFields.style.display=type.value==="game"?"block":"none"};
+  m.querySelector("[data-close]").onclick=()=>m.remove();
+  m.querySelector("#sendSuggestion").onclick=async()=>{
+    const payload={
+      type:type.value,
+      game:m.querySelector("#suggestionGame").value.trim(),
+      platform:m.querySelector("#suggestionPlatform").value,
+      message:m.querySelector("#suggestionMessage").value.trim(),
+      login:s.me?.login||"cliente.demo"
+    };
+    try{
+      await q("/api/suggestions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      m.remove();
+      toast("Sugestão enviada para a equipe da Net4Fun.");
+    }catch(e){toast(e.message)}
+  };
+}
+
+async function adminLogin(){
+  const m=modal(
+    '<div class="modal-head"><div><span class="section-kicker">Modo de teste</span><h2>Acesso administrativo</h2></div><button class="ghost" data-close>Fechar</button></div>'+
+    '<p class="admin-login-hint">Use o padrão <b>nome.sobrenome.adm</b>. Senha temporária de teste: <b>admin123</b>.</p>'+
+    '<label class="field"><span>Login ADM</span><input id="adminLogin" placeholder="nome.sobrenome.adm" autocomplete="username"></label>'+
+    '<label class="field"><span>Senha</span><input id="adminPassword" type="password" placeholder="Senha de teste" autocomplete="current-password"></label>'+
+    '<button class="primary-action full" id="enterAdmin">Entrar como administrador</button>'
+  );
+  m.querySelector("[data-close]").onclick=()=>m.remove();
+  m.querySelector("#enterAdmin").onclick=async()=>{
+    const login=m.querySelector("#adminLogin").value.trim().toLowerCase();
+    const password=m.querySelector("#adminPassword").value;
+    try{
+      const out=await q("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({login,password})});
+      s.adminToken=out.token;s.adminLogin=out.admin.login;s.isAdmin=true;
+      sessionStorage.setItem("net4funAdminToken",s.adminToken);
+      sessionStorage.setItem("net4funAdminLogin",s.adminLogin);
+      await loadAdminSuggestions(true);
+      m.remove();s.tab="admin";render();
+      toast("Acesso administrativo liberado.");
+    }catch(e){toast(e.message)}
+  };
+}
+
+async function loadAdminSuggestions(silent=false){
+  if(!s.adminToken)return;
+  try{
+    const out=await q("/api/admin/suggestions",{headers:adminHeaders()});
+    s.adminSuggestions=out.suggestions||[];
+  }catch(e){
+    if(e.message.includes("administrativo")){
+      s.isAdmin=false;s.adminToken=null;s.adminLogin=null;
+      sessionStorage.removeItem("net4funAdminToken");
+      sessionStorage.removeItem("net4funAdminLogin");
+    }
+    if(!silent)toast(e.message);
+  }
+}
+
+function adminPage(){
+  const items=s.adminSuggestions||[];
+  const pending=items.filter(x=>x.status==="pending").length;
+  return header()+
+    '<section class="admin-panel">'+
+      '<div class="admin-head"><div><span class="section-kicker">Painel administrativo</span><h2>Sugestões dos clientes</h2><p>Logado como '+esc(s.adminLogin||"admin")+'</p></div><button class="ghost" data-action="admin-logout">Sair do ADM</button></div>'+
+      '<div class="admin-summary"><span><b>'+pending+'</b> pendentes</span><span><b>'+items.length+'</b> recebidas</span></div>'+
+      '<div class="suggestion-list">'+
+        (items.length?items.map(adminSuggestionCard).join(""):'<div class="empty-state">Nenhuma sugestão recebida ainda.</div>')+
+      '</div>'+
+    '</section>';
+}
+function adminSuggestionCard(item){
+  const isGame=item.type==="game";
+  const platform=item.platform==="console"?"Console":"PC";
+  return '<article class="admin-suggestion '+esc(item.status)+'">'+
+    '<div class="admin-suggestion-top"><span class="suggestion-kind">'+(isGame?"Jogo • "+platform:"Sugestão geral")+'</span><span class="suggestion-status">'+esc(item.status)+'</span></div>'+
+    '<h3>'+esc(isGame?item.game:"Sugestão do cliente")+'</h3>'+
+    (item.message?'<p>'+esc(item.message)+'</p>':'')+
+    '<small>Enviado por '+esc(item.login||"cliente")+'</small>'+
+    (item.status==="pending"?'<div class="admin-actions"><button class="approve" data-suggestion-action="approve" data-suggestion-id="'+esc(item.id)+'">'+(isGame?"Aprovar e adicionar":"Aprovar")+'</button><button class="reject" data-suggestion-action="reject" data-suggestion-id="'+esc(item.id)+'">Recusar</button></div>':'')+
+  '</article>';
+}
+
+async function reviewSuggestion(id,action){
+  try{
+    const out=await q("/api/admin/suggestions/"+encodeURIComponent(id)+"/"+action,{method:"POST",headers:adminHeaders(),body:"{}"});
+    if(out.games)s.games=out.games;
+    await loadAdminSuggestions(true);
+    render();
+    toast(action==="approve"?"Sugestão aprovada.":"Sugestão recusada.");
+  }catch(e){toast(e.message)}
+}
+
+function logoutAdmin(){
+  s.isAdmin=false;s.adminToken=null;s.adminLogin=null;s.adminSuggestions=[];s.tab="account";
+  sessionStorage.removeItem("net4funAdminToken");
+  sessionStorage.removeItem("net4funAdminLogin");
+  render();
+}
+
+function showPendingAnnouncement(){
+  if(!s.announcements?.length||s.isAdmin)return;
+  let seen=[];
+  try{seen=JSON.parse(localStorage.getItem("net4funSeenAnnouncements")||"[]")}catch(e){}
+  const a=s.announcements.find(x=>!seen.includes(x.id));
+  if(!a)return;
+  const m=modal(
+    '<div class="announcement-modal"><span class="section-kicker">Novidade na Net4Fun</span><h2>'+esc(a.title)+'</h2><p>'+esc(a.message)+'</p><button class="primary-action full" data-close-announcement>Entendi</button></div>'
+  );
+  m.querySelector("[data-close-announcement]").onclick=()=>{
+    seen.push(a.id);
+    localStorage.setItem("net4funSeenAnnouncements",JSON.stringify(seen.slice(-50)));
+    m.remove();
+  };
+}
+
 async function installApp(){
   if(s.installPrompt){
     s.installPrompt.prompt();
@@ -301,14 +454,17 @@ window.addEventListener("beforeinstallprompt",e=>{
 
 function bottomNav(){
   const items=[["home","Início"],["events","Corujão"],["account","Conta"]];
-  return '<nav class="bottom-nav">'+items.map(([id,label])=>
+  if(s.isAdmin)items.push(["admin","Admin"]);
+  return '<nav class="bottom-nav '+(s.isAdmin?"admin-nav":"")+'">'+items.map(([id,label])=>
     '<button class="'+(s.tab===id?"active":"")+'" data-tab="'+id+'">'+label+'</button>'
   ).join("")+'</nav>';
 }
 
 function render(){
-  if(!["home","events","account"].includes(s.tab))s.tab="home";
-  A.innerHTML='<main class="app-shell">'+(s.tab==="home"?home():s.tab==="events"?events():account())+'</main>'+bottomNav();
+  const allowed=["home","events","account"].concat(s.isAdmin?["admin"]:[]);
+  if(!allowed.includes(s.tab))s.tab="home";
+  const page=s.tab==="home"?home():s.tab==="events"?events():s.tab==="account"?account():adminPage();
+  A.innerHTML='<main class="app-shell">'+page+'</main>'+bottomNav()+suggestionBubble();
 }
 
 document.addEventListener("click",e=>{
@@ -323,6 +479,11 @@ document.addEventListener("click",e=>{
   if(action?.dataset.action==="password"){openPassword();return}
   if(action?.dataset.action==="toggle-password"){s.showPassword=!s.showPassword;render();return}
   if(action?.dataset.action==="install-app"){installApp();return}
+  if(action?.dataset.action==="suggestion"){openSuggestion();return}
+  if(action?.dataset.action==="admin-login"){adminLogin();return}
+  if(action?.dataset.action==="admin-logout"){logoutAdmin();return}
+  const review=e.target.closest("[data-suggestion-action]");
+  if(review){reviewSuggestion(review.dataset.suggestionId,review.dataset.suggestionAction);return}
   const pkg=e.target.closest("[data-package]");
   if(pkg){
     const [type,hours,price]=pkg.dataset.package.split(":");
@@ -330,6 +491,6 @@ document.addEventListener("click",e=>{
   }
 });
 
-if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=16",{updateViaCache:"none"}).catch(()=>{}));
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=17",{updateViaCache:"none"}).catch(()=>{}));
 render();
 load();
