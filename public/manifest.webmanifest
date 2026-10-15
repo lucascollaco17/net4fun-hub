@@ -11,8 +11,8 @@
   "orientation":"portrait-primary",
   "prefer_related_applications":false,
   "icons":[
-    {"src":"/app-icon-net4fun.webp?v=15","sizes":"1518x1518","type":"image/webp","purpose":"any"},
-    {"src":"/app-icon-net4fun.webp?v=15","sizes":"1518x1518","type":"image/webp","purpose":"maskable"}
+    {"src":"/app-icon-net4fun.webp?v=16","sizes":"1518x1518","type":"image/webp","purpose":"any"},
+    {"src":"/app-icon-net4fun.webp?v=16","sizes":"1518x1518","type":"image/webp","purpose":"maskable"}
   ],
   "shortcuts":[
     {"name":"Início","url":"/?tab=home"},

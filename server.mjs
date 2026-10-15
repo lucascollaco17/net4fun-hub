@@ -63,13 +63,14 @@ http.createServer(async(req,res)=>{
     const u=new URL(req.url,"http://localhost");
     console.log("[request]",req.method,u.pathname);
 
-    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"3.0.0",mode:"demo"});
+    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"3.1.0",mode:"demo"});
     if(u.pathname==="/api/me")return send(res,200,{user:{
       name:"Cliente Demo",
       login:"cliente.demo",
       remainingMinutes:522,
       normalMinutes:522,
-      vipMinutes:180
+      vipMinutes:180,
+      demoPassword:"demo1234"
     }});
     if(u.pathname==="/api/stations")return send(res,200,{source:"demo",stations});
 

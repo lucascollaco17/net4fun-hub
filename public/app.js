@@ -4,7 +4,9 @@ let s={
   events:[],
   me:null,
   device:"pc",
-  selectedEventPc:null
+  selectedEventPc:null,
+  showPassword:false,
+  installPrompt:null
 };
 
 const A=document.querySelector("#app");
@@ -40,7 +42,7 @@ function byName(name){return s.stations.find(p=>p.name===name)}
 
 function header(){
   return '<header class="app-header">'+
-    '<div class="brand-panel"><img src="/net4fun-logo.webp?v=15" alt="Net4Fun"></div>'+
+    '<div class="brand-panel"><img src="/net4fun-logo.webp?v=16" alt="Net4Fun"></div>'+
     '<div class="balance-stack">'+
       '<div class="balance"><span>Horas normais</span><strong>'+mins(normalMinutes())+'</strong></div>'+
       '<div class="balance vip-balance"><span>Horas VIP</span><strong>'+mins(vipMinutes())+'</strong></div>'+
@@ -170,7 +172,7 @@ function events(){
   const reserved=e.stations.filter(x=>x.reserved).length;
   return header()+
     '<section class="event-top">'+
-      '<div class="event-image"><img src="/corujao-net4fun-final.webp?v=15" alt="Corujão Net4Fun"></div>'+
+      '<div class="event-image"><img src="/corujao-net4fun-hq-v16.webp?v=16" alt="Corujão Net4Fun"></div>'+
       '<div class="event-side">'+
         '<div class="event-date"><span class="section-kicker">Próximo Corujão</span><strong>'+nextSaturday()+'</strong><small>23:00 às 06:00</small></div>'+
         '<div class="reservation-box"><span class="section-kicker">Reserva</span>'+
@@ -216,23 +218,32 @@ const packages=[
 ];
 
 function account(){
+  const normal=packages.filter(p=>p.type==="normal");
+  const vip=packages.filter(p=>p.type==="vip");
+  const shown=s.showPassword?(s.me?.demoPassword||"demo1234"):"••••••••";
   return header()+
     '<section class="credentials-card">'+
       '<span class="section-kicker">Credenciais de login</span>'+
       '<div class="credential-row"><span>Login</span><strong>'+(s.me?.login||"—")+'</strong></div>'+
-      '<div class="credential-row"><span>Senha</span><strong>••••••••</strong></div>'+
+      '<div class="credential-row password-row"><span>Senha</span><strong>'+shown+'</strong><button class="password-toggle" data-action="toggle-password">'+(s.showPassword?"Ocultar":"Mostrar")+'</button></div>'+
       '<button class="secondary-action" data-action="password">Alterar senha</button>'+
     '</section>'+
     '<section class="hours-section">'+
       '<div class="hours-title"><span class="section-kicker">Opções para adicionar horas</span><h2>Escolha um pacote</h2></div>'+
-      '<div class="package-grid">'+packages.map(p=>
-        '<button class="package-card '+p.type+'" data-package="'+p.type+':'+p.hours+':'+p.price+'">'+
-          '<span>'+(p.type==="normal"?"Hora normal":"Hora VIP")+'</span>'+
-          '<strong>'+p.hours+' '+(p.hours===1?"hora":"horas")+'</strong>'+
-          '<b>'+money(p.price)+'</b>'+
-        '</button>'
-      ).join("")+'</div>'+
+      '<div class="package-columns">'+
+        '<div class="package-column"><div class="package-column-title">Horas normais</div>'+normal.map(p=>packageCard(p)).join("")+'</div>'+
+        '<div class="package-column"><div class="package-column-title">Horas VIP</div>'+vip.map(p=>packageCard(p)).join("")+'</div>'+
+      '</div>'+
+      '<button class="install-button" data-action="install-app">Instalar aplicativo</button>'+
+      '<p class="install-help">No Android, o navegador abrirá a instalação quando disponível. No iPhone, use Compartilhar → Adicionar à Tela de Início.</p>'+
     '</section>';
+}
+function packageCard(p){
+  return '<button class="package-card '+p.type+'" data-package="'+p.type+':'+p.hours+':'+p.price+'">'+
+    '<span>'+(p.type==="normal"?"Hora normal":"Hora VIP")+'</span>'+
+    '<strong>'+p.hours+' '+(p.hours===1?"hora":"horas")+'</strong>'+
+    '<b>'+money(p.price)+'</b>'+
+  '</button>';
 }
 
 function modal(html){
@@ -272,6 +283,22 @@ async function buyPackage(type,hours,price){
   }catch(e){toast(e.message)}
 }
 
+async function installApp(){
+  if(s.installPrompt){
+    s.installPrompt.prompt();
+    try{await s.installPrompt.userChoice}catch(e){}
+    s.installPrompt=null;
+    return;
+  }
+  const isiOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  if(isiOS)toast("No iPhone: toque em Compartilhar e depois em Adicionar à Tela de Início.",5000);
+  else toast("Abra o menu do navegador e toque em Instalar app / Adicionar à tela inicial.",5000);
+}
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault();
+  s.installPrompt=e;
+});
+
 function bottomNav(){
   const items=[["home","Início"],["events","Corujão"],["account","Conta"]];
   return '<nav class="bottom-nav">'+items.map(([id,label])=>
@@ -294,6 +321,8 @@ document.addEventListener("click",e=>{
   const action=e.target.closest("[data-action]");
   if(action?.dataset.action==="confirm-reservation"){confirmReservation();return}
   if(action?.dataset.action==="password"){openPassword();return}
+  if(action?.dataset.action==="toggle-password"){s.showPassword=!s.showPassword;render();return}
+  if(action?.dataset.action==="install-app"){installApp();return}
   const pkg=e.target.closest("[data-package]");
   if(pkg){
     const [type,hours,price]=pkg.dataset.package.split(":");
@@ -301,6 +330,6 @@ document.addEventListener("click",e=>{
   }
 });
 
-if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=15",{updateViaCache:"none"}).catch(()=>{}));
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=16",{updateViaCache:"none"}).catch(()=>{}));
 render();
 load();

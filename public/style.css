@@ -387,3 +387,85 @@ button{cursor:pointer}
   .bottom-nav{bottom:7px;width:calc(100% - 12px);padding:5px;gap:4px}
   .bottom-nav button{padding:10px 6px;font-size:11px}
 }
+
+/* V16 — ajustes de logo, Corujão, Conta e instalação */
+.brand-panel{overflow:hidden!important;padding:0!important}
+.brand-panel img{
+  width:100%!important;
+  height:100%!important;
+  min-height:116px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:scale(1.42);
+  transform-origin:center;
+}
+.event-image{
+  aspect-ratio:16/9!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  background:#07111a!important;
+}
+.event-image img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  image-rendering:auto!important;
+}
+.password-row{grid-template-columns:120px minmax(0,1fr) auto!important}
+.password-toggle{
+  border:1px solid #2b7898;
+  background:#0f3042;
+  color:#dff8ff;
+  border-radius:8px;
+  padding:7px 10px;
+  font-size:11px;
+  font-weight:900;
+}
+.package-columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.package-column{display:grid;gap:8px}
+.package-column-title{
+  color:#8fdfff;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:10px;
+  font-weight:900;
+  padding:0 3px 2px;
+}
+.package-columns .package-card{
+  width:100%;
+  min-height:112px;
+}
+.install-button{
+  width:100%;
+  margin-top:14px;
+  padding:13px 16px;
+  border:1px solid #35bde8;
+  border-radius:10px;
+  background:linear-gradient(180deg,#17627f,#10445d);
+  color:#fff;
+  font-weight:950;
+}
+.install-help{
+  margin:8px 2px 0;
+  color:#8ea7b5;
+  font-size:10px;
+  line-height:1.4;
+}
+@media(max-width:850px){
+  .brand-panel img{min-height:94px!important;transform:scale(1.48)}
+}
+@media(max-width:560px){
+  .brand-panel{min-height:88px!important}
+  .brand-panel img{min-height:88px!important;transform:scale(1.62)}
+  .event-image{aspect-ratio:16/9!important}
+  .event-image img{object-fit:contain!important}
+  .password-row{grid-template-columns:72px minmax(0,1fr) auto!important}
+  .package-columns{gap:6px}
+  .package-column{gap:6px}
+  .package-columns .package-card{min-height:108px}
+}
