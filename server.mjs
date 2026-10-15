@@ -30,6 +30,19 @@ const event={
 };
 const reserved=new Set(["corujao-sabado:PC 03","corujao-sabado:PC 07","corujao-sabado:PC 12","corujao-sabado:PC 34"]);
 const reports=[];
+const gameLibrary={
+  pc:["Counter-Strike 2","VALORANT","League of Legends","Fortnite","GTA V","Minecraft","Rocket League","Roblox","Dota 2","Overwatch 2"],
+  console:["EA SPORTS FC","GTA V","Fortnite","Mortal Kombat","Call of Duty","Tekken","Rocket League","Minecraft"]
+};
+const suggestions=[];
+const announcements=[];
+const adminTokens=new Map();
+
+function adminAuthorized(req){
+  const raw=String(req.headers.authorization||"");
+  const token=raw.startsWith("Bearer ")?raw.slice(7):"";
+  return token&&adminTokens.has(token);
+}
 
 const mime={
   ".html":"text/html; charset=utf-8",
@@ -63,7 +76,7 @@ http.createServer(async(req,res)=>{
     const u=new URL(req.url,"http://localhost");
     console.log("[request]",req.method,u.pathname);
 
-    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"3.1.0",mode:"demo"});
+    if(u.pathname==="/api/health")return send(res,200,{ok:true,version:"3.2.0",mode:"demo"});
     if(u.pathname==="/api/me")return send(res,200,{user:{
       name:"Cliente Demo",
       login:"cliente.demo",
@@ -73,6 +86,85 @@ http.createServer(async(req,res)=>{
       demoPassword:"demo1234"
     }});
     if(u.pathname==="/api/stations")return send(res,200,{source:"demo",stations});
+
+    if(u.pathname==="/api/games"&&req.method==="GET"){
+      return send(res,200,{games:gameLibrary});
+    }
+
+    if(u.pathname==="/api/announcements"&&req.method==="GET"){
+      return send(res,200,{announcements:[...announcements].reverse()});
+    }
+
+    if(u.pathname==="/api/suggestions"&&req.method==="POST"){
+      const b=await body(req);
+      const type=String(b.type||"game");
+      const message=String(b.message||"").trim();
+      const game=String(b.game||"").trim();
+      const platform=String(b.platform||"pc").toLowerCase();
+      if(type==="game"){
+        if(!game)return send(res,400,{error:"Informe o nome do jogo"});
+        if(!["pc","console"].includes(platform))return send(res,400,{error:"Plataforma inválida"});
+      }else if(!message){
+        return send(res,400,{error:"Escreva sua sugestão"});
+      }
+      const item={
+        id:crypto.randomUUID(),
+        type,
+        game:type==="game"?game:null,
+        platform:type==="game"?platform:null,
+        message,
+        login:String(b.login||"cliente.demo"),
+        status:"pending",
+        createdAt:new Date().toISOString()
+      };
+      suggestions.unshift(item);
+      return send(res,201,{ok:true,suggestion:item});
+    }
+
+    if(u.pathname==="/api/admin/login"&&req.method==="POST"){
+      const b=await body(req);
+      const login=String(b.login||"").trim().toLowerCase();
+      const password=String(b.password||"");
+      if(!/^[a-z0-9]+\.[a-z0-9]+\.adm$/i.test(login))return send(res,401,{error:"Use o padrão nome.sobrenome.adm"});
+      if(password!=="admin123")return send(res,401,{error:"Senha de teste incorreta"});
+      const token=crypto.randomUUID();
+      adminTokens.set(token,{login,createdAt:Date.now()});
+      return send(res,200,{ok:true,token,admin:{login}});
+    }
+
+    if(u.pathname==="/api/admin/suggestions"&&req.method==="GET"){
+      if(!adminAuthorized(req))return send(res,401,{error:"Acesso administrativo necessário"});
+      return send(res,200,{suggestions});
+    }
+
+    const suggestionAction=u.pathname.match(/^\/api\/admin\/suggestions\/([^/]+)\/(approve|reject)$/);
+    if(suggestionAction&&req.method==="POST"){
+      if(!adminAuthorized(req))return send(res,401,{error:"Acesso administrativo necessário"});
+      const id=decodeURIComponent(suggestionAction[1]);
+      const action=suggestionAction[2];
+      const item=suggestions.find(x=>x.id===id);
+      if(!item)return send(res,404,{error:"Sugestão não encontrada"});
+      if(item.status!=="pending")return send(res,409,{error:"Essa sugestão já foi analisada"});
+      const admin=adminTokens.get(String(req.headers.authorization||"").replace(/^Bearer /,""));
+      item.status=action==="approve"?"approved":"rejected";
+      item.reviewedAt=new Date().toISOString();
+      item.reviewedBy=admin?.login||"admin";
+      if(action==="approve"&&item.type==="game"){
+        const list=gameLibrary[item.platform];
+        if(list&&!list.some(g=>g.toLowerCase()===String(item.game).toLowerCase()))list.push(item.game);
+        const platformLabel=item.platform==="pc"?"PC":"Console";
+        announcements.push({
+          id:crypto.randomUUID(),
+          kind:"game-added",
+          title:"Novo jogo disponível!",
+          message:item.game+" foi adicionado à biblioteca de "+platformLabel+".",
+          game:item.game,
+          platform:item.platform,
+          createdAt:new Date().toISOString()
+        });
+      }
+      return send(res,200,{ok:true,suggestion:item,games:gameLibrary});
+    }
 
     if(u.pathname==="/api/events"&&req.method==="GET"){
       const taken=[...reserved].filter(x=>x.startsWith(event.id+":")).map(x=>x.split(":")[1]);
@@ -141,4 +233,4 @@ http.createServer(async(req,res)=>{
     if(!res.headersSent)send(res,500,{error:"Erro interno"});
     else res.end();
   }
-}).listen(PORT,()=>console.log("Net4Fun Hub v3 online"));
+}).listen(PORT,()=>console.log("Net4Fun Hub v3.2 online"));
