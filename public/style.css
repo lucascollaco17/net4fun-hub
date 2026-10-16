@@ -610,3 +610,61 @@ button{cursor:pointer}
   .admin-actions{flex-direction:column}
   .bottom-nav.admin-nav button{font-size:10px}
 }
+
+
+/* V19 — correção do encaixe da logo e do painel do Corujão */
+.brand-panel{
+  position:relative!important;
+  overflow:hidden!important;
+  padding:0!important;
+}
+.brand-panel img{
+  position:absolute!important;
+  top:4px!important;
+  left:4px!important;
+  width:calc(100% - 8px)!important;
+  height:calc(100% - 8px)!important;
+  min-height:0!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+}
+.event-image{
+  position:relative!important;
+  isolation:isolate;
+  aspect-ratio:16/9!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  background:#07111a!important;
+}
+.event-image::before{
+  content:"";
+  position:absolute;
+  inset:-20px;
+  z-index:0;
+  background-image:url("/corujao-net4fun-final.webp?v=19");
+  background-size:cover;
+  background-position:center;
+  filter:blur(18px) brightness(.42) saturate(1.2);
+  transform:scale(1.08);
+}
+.event-image img{
+  position:absolute!important;
+  top:0!important;
+  left:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  z-index:1;
+}
+@media(max-width:560px){
+  .brand-panel{padding:0!important}
+  .brand-panel img{
+    top:3px!important;
+    left:3px!important;
+    width:calc(100% - 6px)!important;
+    height:calc(100% - 6px)!important;
+  }
+}
