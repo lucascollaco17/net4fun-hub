@@ -60,7 +60,7 @@ function byName(name){return s.stations.find(p=>p.name===name)}
 
 function header(){
   return '<header class="app-header">'+
-    '<div class="brand-panel"><img src="/net4fun-logo.webp?v=20" alt="Net4Fun"></div>'+
+    '<div class="brand-panel"><img src="/net4fun-logo.webp?v=21" alt="Net4Fun"></div>'+
     '<div class="balance-stack">'+
       '<div class="balance"><span>Horas normais</span><strong>'+mins(normalMinutes())+'</strong></div>'+
       '<div class="balance vip-balance"><span>Horas VIP</span><strong>'+mins(vipMinutes())+'</strong></div>'+
@@ -190,7 +190,7 @@ function events(){
   const reserved=e.stations.filter(x=>x.reserved).length;
   return header()+
     '<section class="event-top">'+
-      '<div class="event-image"><img src="/corujao-net4fun-final.webp?v=20" alt="Corujão Net4Fun"></div>'+
+      '<div class="event-image"><img src="/corujao-net4fun-final.webp?v=21" alt="Corujão Net4Fun"></div>'+
       '<div class="event-side">'+
         '<div class="event-date"><span class="section-kicker">Próximo Corujão</span><strong>'+nextSaturday()+'</strong><small>23:00 às 06:00</small></div>'+
         '<div class="reservation-box"><span class="section-kicker">Reserva</span>'+
@@ -491,6 +491,6 @@ document.addEventListener("click",e=>{
   }
 });
 
-if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=20",{updateViaCache:"none"}).catch(()=>{}));
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=21",{updateViaCache:"none"}).catch(()=>{}));
 render();
 load();
