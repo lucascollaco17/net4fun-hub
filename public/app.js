@@ -55,10 +55,10 @@ async function load(){
 
 function entryScreen(){
   if(s.entryScreen==="splash"){
-    return '<section class="brand-splash" aria-label="Net4Fun Hub"><img src="/net4fun-logo.webp?v=22" alt="Net4Fun"><span class="splash-progress"></span></section>';
+    return '<section class="brand-splash" aria-label="Net4Fun Hub"><img class="splash-logo" src="/net4fun-white.svg?v=23" alt="Net4Fun"><span class="splash-progress"></span></section>';
   }
   return '<main class="login-screen">'+
-    '<header class="login-brands"><img class="login-net4fun" src="/net4fun-logo.webp?v=22" alt="Net4Fun"><div class="ggleap-wordmark" aria-label="ggLeap"><span>gg</span>Leap</div></header>'+
+    '<header class="login-brands"><img class="login-net4fun" src="/net4fun-white.svg?v=23" alt="Net4Fun"><div class="ggleap-wordmark" aria-label="ggLeap"><span>gg</span>Leap</div></header>'+
     '<section class="login-card">'+
       '<span class="login-eyebrow">NET4FUN HUB</span>'+
       '<h1>Bem-vindo de volta</h1>'+
@@ -528,5 +528,5 @@ document.addEventListener("click",e=>{
 
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=21",{updateViaCache:"none"}).catch(()=>{}));
 render();
-window.setTimeout(()=>{if(s.entryScreen==="splash"){s.entryScreen="login";render()}},1900);
+window.setTimeout(()=>{if(s.entryScreen==="splash"){s.entryScreen="login";render()}},2100);
 load();
