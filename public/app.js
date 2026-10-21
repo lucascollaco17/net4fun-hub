@@ -127,10 +127,12 @@ function floorPlan(mode){
   return '<div class="floor-scroll"><div class="floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-extra">'+pcRange(8,12,pcInactive)+'</div>'+
-    '<div class="desk desk-left">'+pcRange(13,24,pcInactive)+'</div>'+
-    '<div class="desk desk-center">'+pcRange(25,38,pcInactive)+'</div>'+
-    '<div class="desk desk-right">'+pcRange(1,7,pcInactive,true)+'</div>'+
+    '<div class="desk desk-normal-left">'+pcRange(1,5,pcInactive,true)+'</div>'+
+    '<div class="desk desk-normal-main">'+pcRange(6,12,pcInactive,false)+'</div>'+
+    '<div class="desk desk-vip-one">'+pcRange(13,18,pcInactive,true)+'</div>'+
+    '<div class="desk desk-vip-two">'+pcRange(19,26,pcInactive,false)+'</div>'+
+    '<div class="desk desk-vip-three">'+pcRange(27,34,pcInactive,true)+'</div>'+
+    '<div class="desk desk-vip-four">'+pcRange(35,44,pcInactive,false)+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
@@ -192,10 +194,12 @@ function eventFloor(e){
   return '<div class="floor-scroll"><div class="floor event-floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-extra">'+eventPcRange(8,12,e)+'</div>'+
-    '<div class="desk desk-left">'+eventPcRange(13,24,e)+'</div>'+
-    '<div class="desk desk-center">'+eventPcRange(25,38,e)+'</div>'+
-    '<div class="desk desk-right">'+[7,6,5,4,3,2,1].map(i=>eventPc("PC "+String(i).padStart(2,"0"),e)).join("")+'</div>'+
+    '<div class="desk desk-normal-left">'+eventPcRange(1,5,e,true)+'</div>'+
+    '<div class="desk desk-normal-main">'+eventPcRange(6,12,e,false)+'</div>'+
+    '<div class="desk desk-vip-one">'+eventPcRange(13,18,e,true)+'</div>'+
+    '<div class="desk desk-vip-two">'+eventPcRange(19,26,e,false)+'</div>'+
+    '<div class="desk desk-vip-three">'+eventPcRange(27,34,e,true)+'</div>'+
+    '<div class="desk desk-vip-four">'+eventPcRange(35,44,e,false)+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
