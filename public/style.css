@@ -171,7 +171,7 @@ button{cursor:pointer}
   writing-mode:vertical-rl;transform:rotate(180deg)
 }
 .desk{position:absolute;z-index:4;background:#05090d;padding:4px;display:grid;gap:4px;grid-template-columns:1fr;align-content:stretch}
-.desk-normal-left{left:5.8%;top:15.5%;width:5.2%;height:24.5%;grid-template-rows:repeat(5,minmax(0,1fr))}
+.desk-normal-left{left:1%;top:15.5%;width:5.2%;height:24.5%;grid-template-rows:repeat(5,minmax(0,1fr))}
 .desk-normal-main{left:29.6%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(7,minmax(0,1fr))}
 .desk-vip-one{left:35.1%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(6,minmax(0,1fr))}
 .desk-vip-two{left:51.5%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
