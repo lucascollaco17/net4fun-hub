@@ -110,9 +110,11 @@ function pcSeat(name,inactive=false){
   const cls=inactive?"inactive":(p?.status==="busy"?"busy":"free");
   return '<button class="map-pc '+cls+'" '+(inactive?'disabled':'')+' title="'+name+(inactive?"":(" • "+statusLabel(p?.status)))+'"><span>'+name.replace("PC ","")+'</span></button>';
 }
-function pcRange(a,b,inactive=false){
+function pcRange(a,b,inactive=false,ascending=true){
   let out="";
-  for(let i=a;i<=b;i++)out+=pcSeat("PC "+String(i).padStart(2,"0"),inactive);
+  const ids=Array.from({length:b-a+1},(_,i)=>a+i);
+  if(!ascending)ids.reverse();
+  for(const i of ids)out+=pcSeat("PC "+String(i).padStart(2,"0"),inactive);
   return out;
 }
 function ps5Seat(name,cls,inactive=false){
@@ -182,9 +184,11 @@ function eventPc(name,e){
   const label=reserved?"Reservado":selected?"Selecionado":"Liberado";
   return '<button class="map-pc event-pc '+cls+'" data-event-pc="'+name+'" '+(reserved?'disabled':'')+' title="'+name+' • '+label+'"><span>'+name.replace("PC ","")+'</span><em>'+label+'</em></button>';
 }
-function eventPcRange(a,b,e){
+function eventPcRange(a,b,e,ascending=true){
   let out="";
-  for(let i=a;i<=b;i++)out+=eventPc("PC "+String(i).padStart(2,"0"),e);
+  const ids=Array.from({length:b-a+1},(_,i)=>a+i);
+  if(!ascending)ids.reverse();
+  for(const i of ids)out+=eventPc("PC "+String(i).padStart(2,"0"),e);
   return out;
 }
 function eventConsole(cls){
