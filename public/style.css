@@ -173,9 +173,10 @@ button{cursor:pointer}
 .desk{
   position:absolute;z-index:4;background:#05090d;padding:4px;display:grid;gap:5px
 }
+.desk-extra{left:5.8%;top:15.5%;width:8.4%;height:24.5%;grid-template-columns:1fr;grid-template-rows:repeat(5,1fr);gap:4px}
 .desk-left{left:29.6%;top:0;width:10%;height:40.5%;grid-template-columns:1fr 1fr;grid-template-rows:repeat(6,1fr)}
 .desk-center{left:55.4%;top:0;width:10%;height:40.5%;grid-template-columns:1fr 1fr;grid-template-rows:repeat(7,1fr)}
-.desk-right{right:0;top:0;width:5.1%;height:52.2%;grid-template-columns:1fr;grid-template-rows:repeat(12,1fr);gap:4px}
+.desk-right{right:0;top:0;width:5.1%;height:52.2%;grid-template-columns:1fr;grid-template-rows:repeat(7,1fr);gap:4px}
 .map-pc{
   position:relative;min-width:0;min-height:0;padding:0;
   display:grid;place-items:center;
@@ -200,7 +201,6 @@ button{cursor:pointer}
 .wall-left-bottom{left:0;top:52.7%;width:5.1%;height:47.3%}
 .wall-middle-bottom{left:29.6%;top:52.7%;width:5.1%;height:47.3%}
 .wall-right-bottom{right:0;top:74.9%;width:5.1%;height:25.1%}
-.wall-divider-bottom{left:60%;top:71%;width:.8%;height:29%;}
 .reception{
   left:59.2%;top:52.2%;width:40.8%;height:22.7%;
   display:grid;place-items:center;
@@ -228,10 +228,8 @@ button{cursor:pointer}
 .map-ps5.free em{color:#89f2ba;background:rgba(53,215,154,.13)}
 .map-ps5.busy em{color:#ffb5bf;background:rgba(255,102,122,.13)}
 .map-ps5.inactive{opacity:.16;filter:saturate(.2)}
-.ps-one{left:1.6%;top:17.3%}.ps-two{left:1.6%;top:30.6%}
-.ps-three{left:1.6%;top:63.4%}.ps-four{left:1.6%;top:88.3%}
-.ps-five{left:30.2%;top:63.4%}.ps-six{left:30.2%;top:88.3%}
-.ps-seven{right:.8%;top:78.4%;flex-direction:row-reverse}.ps-eight{right:.8%;top:92.4%;flex-direction:row-reverse}
+.ps-one{left:1.6%;top:63%}.ps-two{left:1.6%;top:76%}.ps-three{left:1.6%;top:89%}
+.ps-four{left:30.2%;top:63%}.ps-five{left:30.2%;top:76%}.ps-six{left:30.2%;top:89%}
 
 .event-top{
   margin-top:16px;
