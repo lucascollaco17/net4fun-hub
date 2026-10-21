@@ -170,13 +170,13 @@ button{cursor:pointer}
   color:#091016;font-weight:950;font-size:13px;
   writing-mode:vertical-rl;transform:rotate(180deg)
 }
-.desk{
-  position:absolute;z-index:4;background:#05090d;padding:4px;display:grid;gap:5px
-}
-.desk-extra{left:5.8%;top:15.5%;width:8.4%;height:24.5%;grid-template-columns:1fr;grid-template-rows:repeat(5,1fr);gap:4px}
-.desk-left{left:29.6%;top:0;width:10%;height:40.5%;grid-template-columns:1fr 1fr;grid-template-rows:repeat(6,1fr)}
-.desk-center{left:55.4%;top:0;width:10%;height:40.5%;grid-template-columns:1fr 1fr;grid-template-rows:repeat(7,1fr)}
-.desk-right{right:0;top:0;width:5.1%;height:52.2%;grid-template-columns:1fr;grid-template-rows:repeat(7,1fr);gap:4px}
+.desk{position:absolute;z-index:4;background:#05090d;padding:4px;display:grid;gap:4px;grid-template-columns:1fr;align-content:stretch}
+.desk-normal-left{left:5.8%;top:15.5%;width:5.2%;height:24.5%;grid-template-rows:repeat(5,minmax(0,1fr))}
+.desk-normal-main{left:29.6%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(7,minmax(0,1fr))}
+.desk-vip-one{left:35.1%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(6,minmax(0,1fr))}
+.desk-vip-two{left:48.1%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
+.desk-vip-three{left:55.3%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
+.desk-vip-four{right:0;top:0;width:5.2%;height:52.2%;grid-template-rows:repeat(10,minmax(0,1fr))}
 .map-pc{
   position:relative;min-width:0;min-height:0;padding:0;
   display:grid;place-items:center;
