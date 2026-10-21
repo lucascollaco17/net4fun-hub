@@ -1,5 +1,5 @@
 const CACHE="net4fun-v23";
-const ASSETS=["/","/index.html","/style.css?v=23","/app.js?v=23","/manifest.webmanifest?v=23","/corujao-net4fun-final.webp?v=23","/net4fun-white.svg?v=23","/app-icon-net4fun.webp?v=23"];
+const ASSETS=["/","/index.html","/style.css?v=24","/app.js?v=24","/manifest.webmanifest?v=24","/corujao-net4fun-final.webp?v=24","/net4fun-white.svg?v=24","/app-icon-net4fun.svg?v=24"];
 self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch",e=>{
