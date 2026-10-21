@@ -1,21 +1,37 @@
 {
-  "id":"/",
-  "name":"Net4Fun Hub",
-  "short_name":"Net4Fun",
-  "description":"Acompanhe saldo, mapa de PCs e reservas de Corujão.",
-  "start_url":"/?source=pwa",
-  "scope":"/",
-  "display":"standalone",
-  "background_color":"#05080d",
-  "theme_color":"#05080d",
-  "orientation":"portrait-primary",
-  "prefer_related_applications":false,
-  "icons":[
-    {"src":"/app-icon-net4fun.webp?v=17","sizes":"1518x1518","type":"image/webp","purpose":"any"},
-    {"src":"/app-icon-net4fun.webp?v=17","sizes":"1518x1518","type":"image/webp","purpose":"maskable"}
+  "id": "/",
+  "name": "Net4Fun Hub",
+  "short_name": "Net4Fun",
+  "description": "Acompanhe saldo, mapa de PCs e reservas de Corujão.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#05080d",
+  "theme_color": "#05080d",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/app-icon-net4fun.svg?v=24",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icon-net4fun.svg?v=24",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
   ],
-  "shortcuts":[
-    {"name":"Início","url":"/?tab=home"},
-    {"name":"Corujão","url":"/?tab=events"}
+  "shortcuts": [
+    {
+      "name": "Início",
+      "url": "/?tab=home"
+    },
+    {
+      "name": "Corujão",
+      "url": "/?tab=events"
+    }
   ]
 }
