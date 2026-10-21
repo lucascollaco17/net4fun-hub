@@ -127,16 +127,17 @@ function floorPlan(mode){
   return '<div class="floor-scroll"><div class="floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-left">'+pcRange(1,12,pcInactive)+'</div>'+
-    '<div class="desk desk-center">'+pcRange(13,26,pcInactive)+'</div>'+
-    '<div class="desk desk-right">'+pcRange(27,38,pcInactive)+'</div>'+
+    '<div class="desk desk-extra">'+pcRange(8,12,pcInactive)+'</div>'+
+    '<div class="desk desk-left">'+pcRange(13,24,pcInactive)+'</div>'+
+    '<div class="desk desk-center">'+pcRange(25,38,pcInactive)+'</div>'+
+    '<div class="desk desk-right">'+pcRange(1,7,pcInactive,true)+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
     '<div class="wall wall-left-bottom"></div>'+
     '<div class="wall wall-middle-bottom"></div>'+
     '<div class="wall wall-right-bottom"></div>'+
-    '<div class="wall wall-divider-bottom"></div>'+
+
     '<div class="zone reception">RECEPÇÃO</div>'+
     ps5Seat("PS5 1","ps-one",psInactive)+
     ps5Seat("PS5 2","ps-two",psInactive)+
@@ -191,9 +192,10 @@ function eventFloor(e){
   return '<div class="floor-scroll"><div class="floor event-floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-left">'+eventPcRange(1,12,e)+'</div>'+
-    '<div class="desk desk-center">'+eventPcRange(13,26,e)+'</div>'+
-    '<div class="desk desk-right">'+eventPcRange(27,38,e)+'</div>'+
+    '<div class="desk desk-extra">'+eventPcRange(8,12,e)+'</div>'+
+    '<div class="desk desk-left">'+eventPcRange(13,24,e)+'</div>'+
+    '<div class="desk desk-center">'+eventPcRange(25,38,e)+'</div>'+
+    '<div class="desk desk-right">'+[7,6,5,4,3,2,1].map(i=>eventPc("PC "+String(i).padStart(2,"0"),e)).join("")+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
