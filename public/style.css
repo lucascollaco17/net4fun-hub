@@ -176,7 +176,7 @@ button{cursor:pointer}
 .desk-vip-one{left:35.1%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(6,minmax(0,1fr))}
 .desk-vip-two{left:48.1%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
 .desk-vip-three{left:55.3%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
-.desk-vip-four{left:68%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(10,minmax(0,1fr))}
+.desk-vip-four{right:0;top:0;width:5.2%;height:52.2%;grid-template-rows:repeat(10,minmax(0,1fr))}
 .map-pc{
   position:relative;min-width:0;min-height:0;padding:0;
   display:grid;place-items:center;
