@@ -11,10 +11,13 @@ const PORT=Number(process.env.PORT||8787);
 
 const busy=new Set(["PC 02","PC 04","PC 09","PC 17","PC 28","PC 33","PS5 2"]);
 const stations=[
-  ...Array.from({length:44},(_,i)=>{
+  ...Array.from({length:12},(_,i)=>{
     const n="PC "+String(i+1).padStart(2,"0");
-    const tier=i<12?"normal":"vip";
-    return {id:n,name:n,type:"PC",tier,zone:tier==="vip"?"Área VIP":"Área "+String.fromCharCode(65+Math.floor(i/8)),status:busy.has(n)?"busy":"free"};
+    return {id:n,name:n,type:"PC",tier:"normal",zone:"Área Normal",status:busy.has(n)?"busy":"free"};
+  }),
+  ...Array.from({length:32},(_,i)=>{
+    const n="VIP PC "+String(i+1).padStart(2,"0");
+    return {id:n,name:n,type:"PC",tier:"vip",zone:"Área VIP",status:busy.has(n.replace("VIP ",""))?"busy":"free"};
   }),
   ...Array.from({length:6},(_,i)=>{
     const n="PS5 "+(i+1);
