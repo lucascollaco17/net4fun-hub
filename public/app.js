@@ -137,7 +137,7 @@ function floorPlan(mode){
   return '<div class="floor-scroll"><div class="floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-normal-left">'+pcRange(8,12,pcInactive,true)+'</div>'+
+    '<div class="desk desk-normal-left">'+pcRange(8,12,pcInactive,false)+'</div>'+
     '<div class="desk desk-normal-main">'+pcRange(1,7,pcInactive,false)+'</div>'+
     '<div class="desk desk-vip-one">'+vipPcRange(27,32,pcInactive,true)+'</div>'+
     '<div class="desk desk-vip-two">'+vipPcRange(19,26,pcInactive,false)+'</div>'+
@@ -214,7 +214,7 @@ function eventFloor(e){
   return '<div class="floor-scroll"><div class="floor event-floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-normal-left">'+eventPcRange(8,12,e,true)+'</div>'+
+    '<div class="desk desk-normal-left">'+eventPcRange(8,12,e,false)+'</div>'+
     '<div class="desk desk-normal-main">'+eventPcRange(1,7,e,false)+'</div>'+
     '<div class="desk desk-vip-one">'+eventVipPcRange(27,32,e,true)+'</div>'+
     '<div class="desk desk-vip-two">'+eventVipPcRange(19,26,e,false)+'</div>'+
