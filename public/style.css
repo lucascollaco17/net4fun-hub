@@ -174,8 +174,8 @@ button{cursor:pointer}
 .desk-normal-left{left:5.8%;top:15.5%;width:5.2%;height:24.5%;grid-template-rows:repeat(5,minmax(0,1fr))}
 .desk-normal-main{left:29.6%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(7,minmax(0,1fr))}
 .desk-vip-one{left:35.1%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(6,minmax(0,1fr))}
-.desk-vip-two{left:48.1%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
-.desk-vip-three{left:55.3%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
+.desk-vip-two{left:51.5%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
+.desk-vip-three{left:58.7%;top:0;width:5.2%;height:40.5%;grid-template-rows:repeat(8,minmax(0,1fr))}
 .desk-vip-four{right:0;top:0;width:5.2%;height:52.2%;grid-template-rows:repeat(10,minmax(0,1fr))}
 .map-pc{
   position:relative;min-width:0;min-height:0;padding:0;
@@ -194,8 +194,8 @@ button{cursor:pointer}
   background:#6b7982;border:1px solid #9aaab3;
   color:#0a1116;font-size:22px;font-weight:950;letter-spacing:.08em
 }
-.vip-one{left:41.2%;width:7%;}
-.vip-two{left:74.2%;width:12%;}
+.vip-one{left:42.4%;width:7%;}
+.vip-two{left:71.7%;width:12%;}
 .wall{position:absolute;z-index:3;background:#05090d}
 .wall-left-top{left:0;top:14.4%;width:5.1%;height:26.1%}
 .wall-left-bottom{left:0;top:52.7%;width:5.1%;height:47.3%}
