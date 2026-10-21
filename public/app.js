@@ -108,7 +108,15 @@ function gameLibrary(){
 function pcSeat(name,inactive=false){
   const p=byName(name);
   const cls=inactive?"inactive":(p?.status==="busy"?"busy":"free");
-  return '<button class="map-pc '+cls+'" '+(inactive?'disabled':'')+' title="'+name+(inactive?"":(" • "+statusLabel(p?.status)))+'"><span>'+name.replace("PC ","")+'</span></button>';
+  const label=name.startsWith("VIP PC ")?name.slice(7):name.replace("PC ","");
+  return '<button class="map-pc '+cls+'" '+(inactive?'disabled':'')+' title="'+name+(inactive?"":(" • "+statusLabel(p?.status)))+'"><span>'+label+'</span></button>';
+}
+function vipPcRange(a,b,inactive=false,ascending=true){
+  let out="";
+  const ids=Array.from({length:b-a+1},(_,i)=>a+i);
+  if(!ascending)ids.reverse();
+  for(const i of ids)out+=pcSeat("VIP PC "+String(i).padStart(2,"0"),inactive);
+  return out;
 }
 function pcRange(a,b,inactive=false,ascending=true){
   let out="";
@@ -131,10 +139,10 @@ function floorPlan(mode){
     '<div class="zone common">ÁREA COMUM</div>'+
     '<div class="desk desk-normal-left">'+pcRange(1,5,pcInactive,true)+'</div>'+
     '<div class="desk desk-normal-main">'+pcRange(6,12,pcInactive,false)+'</div>'+
-    '<div class="desk desk-vip-one">'+pcRange(13,18,pcInactive,true)+'</div>'+
-    '<div class="desk desk-vip-two">'+pcRange(19,26,pcInactive,false)+'</div>'+
-    '<div class="desk desk-vip-three">'+pcRange(27,34,pcInactive,true)+'</div>'+
-    '<div class="desk desk-vip-four">'+pcRange(35,44,pcInactive,false)+'</div>'+
+    '<div class="desk desk-vip-one">'+vipPcRange(1,6,pcInactive,true)+'</div>'+
+    '<div class="desk desk-vip-two">'+vipPcRange(7,14,pcInactive,false)+'</div>'+
+    '<div class="desk desk-vip-three">'+vipPcRange(15,22,pcInactive,true)+'</div>'+
+    '<div class="desk desk-vip-four">'+vipPcRange(23,32,pcInactive,false)+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
@@ -182,7 +190,15 @@ function eventPc(name,e){
   const selected=s.selectedEventPc===name;
   const cls=reserved?"reserved":selected?"selected":"free";
   const label=reserved?"Reservado":selected?"Selecionado":"Liberado";
-  return '<button class="map-pc event-pc '+cls+'" data-event-pc="'+name+'" '+(reserved?'disabled':'')+' title="'+name+' • '+label+'"><span>'+name.replace("PC ","")+'</span><em>'+label+'</em></button>';
+  const seatLabel=name.startsWith("VIP PC ")?name.slice(7):name.replace("PC ","");
+  return '<button class="map-pc event-pc '+cls+'" data-event-pc="'+name+'" '+(reserved?'disabled':'')+' title="'+name+' • '+label+'"><span>'+seatLabel+'</span><em>'+label+'</em></button>';
+}
+function eventVipPcRange(a,b,e,ascending=true){
+  let out="";
+  const ids=Array.from({length:b-a+1},(_,i)=>a+i);
+  if(!ascending)ids.reverse();
+  for(const i of ids)out+=eventPc("VIP PC "+String(i).padStart(2,"0"),e);
+  return out;
 }
 function eventPcRange(a,b,e,ascending=true){
   let out="";
@@ -200,10 +216,10 @@ function eventFloor(e){
     '<div class="zone common">ÁREA COMUM</div>'+
     '<div class="desk desk-normal-left">'+eventPcRange(1,5,e,true)+'</div>'+
     '<div class="desk desk-normal-main">'+eventPcRange(6,12,e,false)+'</div>'+
-    '<div class="desk desk-vip-one">'+eventPcRange(13,18,e,true)+'</div>'+
-    '<div class="desk desk-vip-two">'+eventPcRange(19,26,e,false)+'</div>'+
-    '<div class="desk desk-vip-three">'+eventPcRange(27,34,e,true)+'</div>'+
-    '<div class="desk desk-vip-four">'+eventPcRange(35,44,e,false)+'</div>'+
+    '<div class="desk desk-vip-one">'+eventVipPcRange(1,6,e,true)+'</div>'+
+    '<div class="desk desk-vip-two">'+eventVipPcRange(7,14,e,false)+'</div>'+
+    '<div class="desk desk-vip-three">'+eventVipPcRange(15,22,e,true)+'</div>'+
+    '<div class="desk desk-vip-four">'+eventVipPcRange(23,32,e,false)+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
