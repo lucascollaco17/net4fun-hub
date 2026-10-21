@@ -1,5 +1,7 @@
 let s={
   tab:new URLSearchParams(location.search).get("tab")||"home",
+  entryScreen:"splash",
+  prototypeEntered:false,
   stations:[],
   events:[],
   me:null,
@@ -48,6 +50,28 @@ async function load(){
     render();
     setTimeout(showPendingAnnouncement,80);
   }catch(e){toast(e.message)}
+}
+
+
+function entryScreen(){
+  if(s.entryScreen==="splash"){
+    return '<section class="brand-splash" aria-label="Net4Fun Hub"><img src="/net4fun-logo.webp?v=22" alt="Net4Fun"><span class="splash-progress"></span></section>';
+  }
+  return '<main class="login-screen">'+
+    '<header class="login-brands"><img class="login-net4fun" src="/net4fun-logo.webp?v=22" alt="Net4Fun"><div class="ggleap-wordmark" aria-label="ggLeap"><span>gg</span>Leap</div></header>'+
+    '<section class="login-card">'+
+      '<span class="login-eyebrow">NET4FUN HUB</span>'+
+      '<h1>Bem-vindo de volta</h1>'+
+      '<p class="login-subtitle">Entre para acessar sua experiência Net4Fun.</p>'+
+      '<form id="prototypeLogin" autocomplete="on">'+
+        '<label class="login-field"><span>Login</span><input id="prototypeUsername" name="username" type="text" placeholder="Seu login" autocomplete="username" required></label>'+
+        '<label class="login-field"><span>Senha</span><input id="prototypePassword" name="password" type="password" placeholder="Sua senha" autocomplete="current-password" required></label>'+
+        '<button class="login-submit" type="submit">Entrar <span aria-hidden="true">→</span></button>'+
+      '</form>'+
+      '<p class="prototype-note"><span></span> Protótipo demonstrativo · acesso ilustrativo</p>'+
+    '</section>'+
+    '<footer class="login-footer">Uma nova forma de viver a Net4Fun.</footer>'+
+  '</main>';
 }
 
 function normalMinutes(){return s.me?.normalMinutes ?? s.me?.remainingMinutes ?? 0}
@@ -461,12 +485,23 @@ function bottomNav(){
 }
 
 function render(){
+  if(!s.prototypeEntered){A.innerHTML=entryScreen();return}
   const allowed=["home","events","account"].concat(s.isAdmin?["admin"]:[]);
   if(!allowed.includes(s.tab))s.tab="home";
   const page=s.tab==="home"?home():s.tab==="events"?events():s.tab==="account"?account():adminPage();
   A.innerHTML='<main class="app-shell">'+page+'</main>'+bottomNav()+suggestionBubble();
 }
 
+document.addEventListener("submit",e=>{
+  if(e.target?.id==="prototypeLogin"){
+    e.preventDefault();
+    const username=document.querySelector("#prototypeUsername")?.value.trim();
+    const password=document.querySelector("#prototypePassword")?.value;
+    if(!username||!password)return;
+    s.prototypeEntered=true;
+    render();
+  }
+});
 document.addEventListener("click",e=>{
   const tab=e.target.closest("[data-tab]");
   if(tab){s.tab=tab.dataset.tab;s.selectedEventPc=null;render();return}
@@ -493,4 +528,5 @@ document.addEventListener("click",e=>{
 
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js?v=21",{updateViaCache:"none"}).catch(()=>{}));
 render();
+window.setTimeout(()=>{if(s.entryScreen==="splash"){s.entryScreen="login";render()}},1900);
 load();
