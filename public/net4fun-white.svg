@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 620">
+  <g fill="#fff">
+    <path d="M410 18 494 185 678 190 534 302 584 480 410 382 236 480 286 302 142 190 326 185Z"/>
+  </g>
+  <g fill="#091019">
+    <path d="M309 221c35-8 67 5 89 31-25 17-54 20-76 4-10-8-16-20-13-35Z"/>
+    <path d="M511 221c-35-8-67 5-89 31 25 17 54 20 76 4 10-8 16-20 13-35Z"/>
+  </g>
+  <path d="M294 281c24 49 68 76 116 76s92-27 116-76" fill="none" stroke="#091019" stroke-width="21" stroke-linecap="round"/>
+  <g fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="77" font-style="italic" font-weight="900" letter-spacing="2">
+    <text x="28" y="580" textLength="764" lengthAdjust="spacingAndGlyphs">NET 4 FUN</text>
+  </g>
+</svg>
