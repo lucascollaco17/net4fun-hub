@@ -127,15 +127,16 @@ function floorPlan(mode){
   return '<div class="floor-scroll"><div class="floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-left">'+pcRange(1,14,pcInactive)+'</div>'+
-    '<div class="desk desk-center">'+pcRange(15,28,pcInactive)+'</div>'+
-    '<div class="desk desk-right">'+pcRange(29,40,pcInactive)+'</div>'+
+    '<div class="desk desk-left">'+pcRange(1,12,pcInactive)+'</div>'+
+    '<div class="desk desk-center">'+pcRange(13,26,pcInactive)+'</div>'+
+    '<div class="desk desk-right">'+pcRange(27,38,pcInactive)+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
     '<div class="wall wall-left-bottom"></div>'+
     '<div class="wall wall-middle-bottom"></div>'+
     '<div class="wall wall-right-bottom"></div>'+
+    '<div class="wall wall-divider-bottom"></div>'+
     '<div class="zone reception">RECEPÇÃO</div>'+
     ps5Seat("PS5 1","ps-one",psInactive)+
     ps5Seat("PS5 2","ps-two",psInactive)+
@@ -143,8 +144,6 @@ function floorPlan(mode){
     ps5Seat("PS5 4","ps-four",psInactive)+
     ps5Seat("PS5 5","ps-five",psInactive)+
     ps5Seat("PS5 6","ps-six",psInactive)+
-    ps5Seat("PS5 7","ps-seven",psInactive)+
-    ps5Seat("PS5 8","ps-eight",psInactive)+
   '</div></div>';
 }
 
@@ -192,9 +191,9 @@ function eventFloor(e){
   return '<div class="floor-scroll"><div class="floor event-floor">'+
     '<div class="zone bathrooms">BANHEIROS</div>'+
     '<div class="zone common">ÁREA COMUM</div>'+
-    '<div class="desk desk-left">'+eventPcRange(1,14,e)+'</div>'+
-    '<div class="desk desk-center">'+eventPcRange(15,28,e)+'</div>'+
-    '<div class="desk desk-right">'+eventPcRange(29,40,e)+'</div>'+
+    '<div class="desk desk-left">'+eventPcRange(1,12,e)+'</div>'+
+    '<div class="desk desk-center">'+eventPcRange(13,26,e)+'</div>'+
+    '<div class="desk desk-right">'+eventPcRange(27,38,e)+'</div>'+
     '<div class="vip-zone vip-one">VIP</div>'+
     '<div class="vip-zone vip-two">VIP</div>'+
     '<div class="wall wall-left-top"></div>'+
@@ -202,8 +201,8 @@ function eventFloor(e){
     '<div class="wall wall-middle-bottom"></div>'+
     '<div class="wall wall-right-bottom"></div>'+
     '<div class="zone reception">RECEPÇÃO</div>'+
-    eventConsole("ps-one")+eventConsole("ps-two")+eventConsole("ps-three")+eventConsole("ps-four")+
-    eventConsole("ps-five")+eventConsole("ps-six")+eventConsole("ps-seven")+eventConsole("ps-eight")+
+    eventConsole("ps-one")+eventConsole("ps-two")+eventConsole("ps-three")+
+    eventConsole("ps-four")+eventConsole("ps-five")+eventConsole("ps-six")+
   '</div></div>';
 }
 
